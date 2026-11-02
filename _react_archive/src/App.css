@@ -1,0 +1,47 @@
+/* Portfolio App Styles */
+
+.portfolio-app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+main {
+  flex: 1;
+}
+
+/* Animations & Transitions */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.case-study-modal-backdrop {
+  animation: fadeIn 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.ats-modal-wrapper {
+  animation: fadeIn 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* Custom Selection Highlight */
+::selection {
+  background-color: rgba(45, 212, 191, 0.3);
+  color: #ffffff;
+}
+
+/* Print Overrides */
+@media print {
+  .portfolio-app {
+    background: #ffffff !important;
+  }
+  main > section {
+    display: none !important;
+  }
+}
