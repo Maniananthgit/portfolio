@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../constants/app_colors.dart';
 import '../data/portfolio_data.dart';
+import 'interactive_animations.dart';
 
 class PrinciplesSection extends StatelessWidget {
   const PrinciplesSection({super.key});
@@ -89,20 +90,10 @@ class PrinciplesSection extends StatelessWidget {
 
                       return SizedBox(
                         width: cardWidth,
-                        child: Container(
+                        child: HoverLiftCard(
+                          liftOffset: -6.0,
+                          glowColor: AppColors.accentPrimary,
                           padding: const EdgeInsets.all(24),
-                          decoration: BoxDecoration(
-                            color: AppColors.bgCard,
-                            borderRadius: BorderRadius.circular(16),
-                            border: Border.all(color: AppColors.borderSubtle),
-                            boxShadow: [
-                              BoxShadow(
-                                color: Colors.black.withValues(alpha: 0.3),
-                                blurRadius: 15,
-                                offset: const Offset(0, 6),
-                              ),
-                            ],
-                          ),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [

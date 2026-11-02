@@ -206,57 +206,7 @@ class _CompetenciesSectionState extends State<CompetenciesSection> {
                             children: skills
                                 .map((s) => SizedBox(
                                       width: itemWidth,
-                                      child: Container(
-                                        padding: const EdgeInsets.all(12),
-                                        decoration: BoxDecoration(
-                                          color: Colors.white.withValues(alpha: 0.02),
-                                          borderRadius: BorderRadius.circular(8),
-                                          border: Border.all(color: AppColors.borderSubtle),
-                                        ),
-                                        child: Row(
-                                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                                          children: [
-                                            Expanded(
-                                              child: Text(
-                                                s.name,
-                                                style: GoogleFonts.plusJakartaSans(
-                                                  color: AppColors.textPrimary,
-                                                  fontWeight: FontWeight.w600,
-                                                  fontSize: 13.5,
-                                                ),
-                                              ),
-                                            ),
-                                            Row(
-                                              children: [
-                                                Container(
-                                                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
-                                                  decoration: BoxDecoration(
-                                                    color: AppColors.accentMuted,
-                                                    borderRadius: BorderRadius.circular(4),
-                                                    border: Border.all(color: AppColors.borderAccent),
-                                                  ),
-                                                  child: Text(
-                                                    s.level,
-                                                    style: GoogleFonts.jetBrainsMono(
-                                                      color: AppColors.accentPrimary,
-                                                      fontSize: 10,
-                                                      fontWeight: FontWeight.w600,
-                                                    ),
-                                                  ),
-                                                ),
-                                                const SizedBox(width: 8),
-                                                Text(
-                                                  s.years,
-                                                  style: GoogleFonts.jetBrainsMono(
-                                                    color: AppColors.textMuted,
-                                                    fontSize: 11,
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          ],
-                                        ),
-                                      ),
+                                      child: _SkillTile(s: s),
                                     ))
                                 .toList(),
                           );
@@ -268,6 +218,90 @@ class _CompetenciesSectionState extends State<CompetenciesSection> {
               }),
             ],
           ),
+        ),
+      ),
+    );
+  }
+}
+
+class _SkillTile extends StatefulWidget {
+  final SkillItem s;
+  const _SkillTile({required this.s});
+
+  @override
+  State<_SkillTile> createState() => _SkillTileState();
+}
+
+class _SkillTileState extends State<_SkillTile> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        transform: Matrix4.translationValues(0.0, _isHovered ? -2.0 : 0.0, 0.0),
+        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        decoration: BoxDecoration(
+          color: _isHovered ? AppColors.accentPrimary.withValues(alpha: 0.06) : Colors.white.withValues(alpha: 0.02),
+          borderRadius: BorderRadius.circular(8),
+          border: Border.all(
+            color: _isHovered ? AppColors.accentPrimary.withValues(alpha: 0.6) : AppColors.borderSubtle,
+          ),
+          boxShadow: _isHovered
+              ? [
+                  BoxShadow(
+                    color: AppColors.accentPrimary.withValues(alpha: 0.15),
+                    blurRadius: 10,
+                    offset: const Offset(0, 3),
+                  ),
+                ]
+              : null,
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            Expanded(
+              child: Text(
+                widget.s.name,
+                style: GoogleFonts.plusJakartaSans(
+                  color: _isHovered ? AppColors.accentPrimary : AppColors.textPrimary,
+                  fontWeight: FontWeight.w600,
+                  fontSize: 13.5,
+                ),
+              ),
+            ),
+            Row(
+              children: [
+                Container(
+                  padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 2),
+                  decoration: BoxDecoration(
+                    color: AppColors.accentMuted,
+                    borderRadius: BorderRadius.circular(4),
+                    border: Border.all(color: AppColors.borderAccent),
+                  ),
+                  child: Text(
+                    widget.s.level,
+                    style: GoogleFonts.jetBrainsMono(
+                      color: AppColors.accentPrimary,
+                      fontSize: 10,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 8),
+                Text(
+                  widget.s.years,
+                  style: GoogleFonts.jetBrainsMono(
+                    color: AppColors.textMuted,
+                    fontSize: 11,
+                  ),
+                ),
+              ],
+            ),
+          ],
         ),
       ),
     );

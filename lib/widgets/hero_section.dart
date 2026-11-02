@@ -4,6 +4,7 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../constants/app_colors.dart';
 import '../data/portfolio_data.dart';
+import 'interactive_animations.dart';
 
 class HeroSection extends StatefulWidget {
   final VoidCallback onOpenResume;
@@ -64,7 +65,10 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
             children: [
               _buildExecutiveSummary(isDesktop),
               const SizedBox(height: 48),
-              _buildMetricsGrid(width),
+              StaggeredEntrance(
+                delay: const Duration(milliseconds: 500),
+                child: _buildMetricsGrid(width),
+              ),
             ],
           ),
         ),
@@ -76,204 +80,184 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        // Availability & Verification Pill
-        Container(
-          padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
-          decoration: BoxDecoration(
-            color: AppColors.accentMuted,
-            borderRadius: BorderRadius.circular(30),
-            border: Border.all(color: AppColors.borderAccent),
-          ),
-          child: Row(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              AnimatedBuilder(
-                animation: _pulseController,
-                builder: (context, child) {
-                  return Container(
-                    width: 9,
-                    height: 9,
-                    decoration: BoxDecoration(
+        // Availability & Verification Pill with Pulsing Glow Dot
+        StaggeredEntrance(
+          delay: const Duration(milliseconds: 50),
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
+            decoration: BoxDecoration(
+              color: AppColors.accentMuted,
+              borderRadius: BorderRadius.circular(30),
+              border: Border.all(color: AppColors.borderAccent),
+            ),
+            child: Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                const PulsingGlowDot(color: AppColors.accentPrimary, size: 9),
+                const SizedBox(width: 10),
+                Flexible(
+                  child: Text(
+                    "AVAILABLE FOR SENIOR BACKEND & FULL-STACK ROLES",
+                    style: GoogleFonts.jetBrainsMono(
                       color: AppColors.accentPrimary,
-                      shape: BoxShape.circle,
-                      boxShadow: [
-                        BoxShadow(
-                          color: AppColors.accentPrimary.withValues(alpha: 0.3 + (_pulseController.value * 0.5)),
-                          blurRadius: 6 + (_pulseController.value * 6),
-                          spreadRadius: _pulseController.value * 2,
-                        ),
-                      ],
+                      fontSize: 11,
+                      fontWeight: FontWeight.w600,
+                      letterSpacing: 0.4,
                     ),
-                  );
-                },
-              ),
-              const SizedBox(width: 10),
-              Flexible(
-                child: Text(
-                  "AVAILABLE FOR SENIOR BACKEND & FULL-STACK ROLES",
-                  style: GoogleFonts.jetBrainsMono(
-                    color: AppColors.accentPrimary,
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 0.4,
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
         ),
         const SizedBox(height: 20),
 
         // Role Designation
-        Text(
-          "Python Backend Engineer • FastAPI Specialist • Full-Stack Architect",
-          style: GoogleFonts.jetBrainsMono(
-            color: AppColors.accentPrimary,
-            fontSize: isDesktop ? 14 : 12.5,
-            fontWeight: FontWeight.w600,
-            letterSpacing: 0.4,
+        StaggeredEntrance(
+          delay: const Duration(milliseconds: 120),
+          child: Text(
+            "Python Backend Engineer • FastAPI Specialist • Full-Stack Architect",
+            style: GoogleFonts.jetBrainsMono(
+              color: AppColors.accentPrimary,
+              fontSize: isDesktop ? 14 : 12.5,
+              fontWeight: FontWeight.w600,
+              letterSpacing: 0.4,
+            ),
           ),
         ),
         const SizedBox(height: 14),
 
         // Main Headline
-        RichText(
-          text: TextSpan(
-            style: GoogleFonts.plusJakartaSans(
-              fontSize: isDesktop ? 44 : 30,
-              fontWeight: FontWeight.w800,
-              height: 1.16,
-              letterSpacing: -1.0,
-              color: AppColors.textPrimary,
-            ),
-            children: const [
-              TextSpan(text: "Engineering high-concurrency "),
-              TextSpan(
-                text: "FastAPI microservices",
-                style: TextStyle(
-                  color: AppColors.accentPrimary,
-                ),
+        StaggeredEntrance(
+          delay: const Duration(milliseconds: 200),
+          child: RichText(
+            text: TextSpan(
+              style: GoogleFonts.plusJakartaSans(
+                fontSize: isDesktop ? 44 : 30,
+                fontWeight: FontWeight.w800,
+                height: 1.16,
+                letterSpacing: -1.0,
+                color: AppColors.textPrimary,
               ),
-              TextSpan(text: " & real-time operational systems."),
-            ],
+              children: const [
+                TextSpan(text: "Engineering high-concurrency "),
+                TextSpan(
+                  text: "FastAPI microservices",
+                  style: TextStyle(
+                    color: AppColors.accentPrimary,
+                  ),
+                ),
+                TextSpan(text: " & real-time operational systems."),
+              ],
+            ),
           ),
         ),
         const SizedBox(height: 20),
 
         // Executive Bio
-        Text(
-          "Software Engineer with ~3 years of verified production experience at SPI Equipments India. Specialized in asynchronous Python backends, real-time WebSocket pipelines, PostgreSQL query optimization, and production Flutter client applications.",
-          style: GoogleFonts.plusJakartaSans(
-            fontSize: isDesktop ? 17 : 15,
-            height: 1.65,
-            color: AppColors.textSecondary,
+        StaggeredEntrance(
+          delay: const Duration(milliseconds: 280),
+          child: Text(
+            "Software Engineer with ~3 years of verified production experience at SPI Equipments India. Specialized in asynchronous Python backends, real-time WebSocket pipelines, PostgreSQL query optimization, and production Flutter client applications.",
+            style: GoogleFonts.plusJakartaSans(
+              fontSize: isDesktop ? 17 : 15,
+              height: 1.65,
+              color: AppColors.textSecondary,
+            ),
           ),
         ),
         const SizedBox(height: 24),
 
         // Skills Pill Strip
-        Wrap(
-          spacing: 8,
-          runSpacing: 8,
-          children: [
-            _skillBadge("SPI Equipments (~3 Yrs)", isAccent: true),
-            _skillBadge("FastAPI & Python 3.11+"),
-            _skillBadge("WebSockets & AsyncIO"),
-            _skillBadge("PostgreSQL & MySQL"),
-            _skillBadge("Flutter & Dart Clients"),
-            _skillBadge("GenAI & RAG (pgvector)"),
-            _skillBadge("Docker & Pytest"),
-          ],
+        StaggeredEntrance(
+          delay: const Duration(milliseconds: 360),
+          child: Wrap(
+            spacing: 8,
+            runSpacing: 8,
+            children: [
+              _skillBadge("SPI Equipments (~3 Yrs)", isAccent: true),
+              _skillBadge("FastAPI & Python 3.11+"),
+              _skillBadge("WebSockets & AsyncIO"),
+              _skillBadge("PostgreSQL & MySQL"),
+              _skillBadge("Flutter & Dart Clients"),
+              _skillBadge("GenAI & RAG (pgvector)"),
+              _skillBadge("Docker & Pytest"),
+            ],
+          ),
         ),
         const SizedBox(height: 32),
 
-        // Action Buttons
-        Wrap(
-          spacing: 12,
-          runSpacing: 12,
-          children: [
-            ElevatedButton.icon(
-              onPressed: widget.onExploreProjects,
-              icon: const Icon(Icons.arrow_forward_rounded, size: 16),
-              label: const Text("Explore Featured Projects"),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColors.accentPrimary,
-                foregroundColor: const Color(0xFF042F2E),
-                padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                textStyle: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 14),
+        // Action Buttons with Interactive Hover
+        StaggeredEntrance(
+          delay: const Duration(milliseconds: 440),
+          child: Wrap(
+            spacing: 12,
+            runSpacing: 12,
+            children: [
+              _AnimatedActionButton(
+                onPressed: widget.onExploreProjects,
+                icon: Icons.arrow_forward_rounded,
+                label: "Explore Featured Projects",
+                isPrimary: true,
               ),
-            ),
-            OutlinedButton.icon(
-              onPressed: widget.onOpenResume,
-              icon: const Icon(Icons.file_copy_outlined, size: 16),
-              label: const Text("ATS-Friendly Résumé"),
-              style: OutlinedButton.styleFrom(
-                backgroundColor: AppColors.bgCard,
-                foregroundColor: AppColors.textPrimary,
-                side: const BorderSide(color: AppColors.borderMedium),
-                padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                textStyle: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600, fontSize: 14),
+              _AnimatedActionButton(
+                onPressed: widget.onOpenResume,
+                icon: Icons.file_copy_outlined,
+                label: "ATS-Friendly Résumé",
+                isPrimary: false,
               ),
-            ),
-            OutlinedButton.icon(
-              onPressed: _copyEmail,
-              icon: Icon(
-                _copied ? Icons.check_circle_rounded : Icons.copy_rounded,
-                size: 16,
-                color: _copied ? AppColors.accentPrimary : AppColors.textSecondary,
+              _AnimatedActionButton(
+                onPressed: _copyEmail,
+                icon: _copied ? Icons.check_circle_rounded : Icons.copy_rounded,
+                label: _copied ? "Email Copied!" : "Copy Email",
+                isPrimary: false,
+                isMonospace: true,
               ),
-              label: Text(_copied ? "Email Copied!" : "Copy Email"),
-              style: OutlinedButton.styleFrom(
-                foregroundColor: AppColors.textSecondary,
-                side: const BorderSide(color: AppColors.borderSubtle),
-                padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
-                shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                textStyle: GoogleFonts.jetBrainsMono(fontSize: 13, fontWeight: FontWeight.w500),
-              ),
-            ),
-          ],
+            ],
+          ),
         ),
         const SizedBox(height: 28),
 
         // Meta Strip (Wrap prevents mobile overflow)
-        Wrap(
-          crossAxisAlignment: WrapCrossAlignment.center,
-          spacing: 12,
-          runSpacing: 8,
-          children: [
-            Row(
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                const Icon(Icons.location_on_outlined, color: AppColors.textMuted, size: 16),
-                const SizedBox(width: 6),
-                Text(
-                  "Coimbatore, Tamil Nadu, India",
-                  style: GoogleFonts.plusJakartaSans(color: AppColors.textSecondary, fontSize: 13.5),
-                ),
-              ],
-            ),
-            Text("•", style: GoogleFonts.plusJakartaSans(color: AppColors.textMuted)),
-            InkWell(
-              onTap: () => launchUrl(Uri.parse(PortfolioData.personal.linkedin)),
-              child: Row(
+        StaggeredEntrance(
+          delay: const Duration(milliseconds: 520),
+          child: Wrap(
+            crossAxisAlignment: WrapCrossAlignment.center,
+            spacing: 12,
+            runSpacing: 8,
+            children: [
+              Row(
                 mainAxisSize: MainAxisSize.min,
                 children: [
+                  const Icon(Icons.location_on_outlined, color: AppColors.textMuted, size: 16),
+                  const SizedBox(width: 6),
                   Text(
-                    "LinkedIn Verified Profile",
-                    style: GoogleFonts.plusJakartaSans(
-                      color: AppColors.accentPrimary,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 13.5,
-                    ),
+                    "Coimbatore, Tamil Nadu, India",
+                    style: GoogleFonts.plusJakartaSans(color: AppColors.textSecondary, fontSize: 13.5),
                   ),
-                  const SizedBox(width: 4),
-                  const Icon(Icons.open_in_new_rounded, size: 13, color: AppColors.accentPrimary),
                 ],
               ),
-            ),
-          ],
+              Text("•", style: GoogleFonts.plusJakartaSans(color: AppColors.textMuted)),
+              InkWell(
+                onTap: () => launchUrl(Uri.parse(PortfolioData.personal.linkedin)),
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Text(
+                      "LinkedIn Verified Profile",
+                      style: GoogleFonts.plusJakartaSans(
+                        color: AppColors.accentPrimary,
+                        fontWeight: FontWeight.w600,
+                        fontSize: 13.5,
+                      ),
+                    ),
+                    const SizedBox(width: 4),
+                    const Icon(Icons.open_in_new_rounded, size: 13, color: AppColors.accentPrimary),
+                  ],
+                ),
+              ),
+            ],
+          ),
         ),
       ],
     );
@@ -295,41 +279,66 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
         return Wrap(
           spacing: 16,
           runSpacing: 16,
-          children: metrics.map((m) {
+          children: metrics.asMap().entries.map((entry) {
+            final idx = entry.key;
+            final m = entry.value;
+
+            // Varied accent glows across metric cards
+            Color cardGlow;
+            switch (idx) {
+              case 0:
+                cardGlow = AppColors.accentPrimary; // Teal
+                break;
+              case 1:
+                cardGlow = AppColors.accentSky; // Sky blue
+                break;
+              case 2:
+                cardGlow = AppColors.accentEmerald; // Emerald
+                break;
+              case 3:
+                cardGlow = const Color(0xFFC084FC); // Purple
+                break;
+              default:
+                cardGlow = AppColors.accentPrimary;
+            }
+
             return SizedBox(
               width: itemWidth,
-              child: Container(
-                padding: const EdgeInsets.all(20),
-                decoration: BoxDecoration(
-                  color: AppColors.bgCard,
-                  borderRadius: BorderRadius.circular(14),
-                  border: Border.all(color: AppColors.borderSubtle),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.3),
-                      blurRadius: 15,
-                      offset: const Offset(0, 6),
-                    ),
-                  ],
-                ),
+              child: HoverLiftCard(
+                liftOffset: -8.0,
+                glowColor: cardGlow,
+                padding: const EdgeInsets.all(22),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      m.value,
-                      style: GoogleFonts.plusJakartaSans(
-                        color: AppColors.accentPrimary,
-                        fontSize: 22,
-                        fontWeight: FontWeight.w800,
-                        letterSpacing: -0.3,
-                      ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          m.value,
+                          style: GoogleFonts.plusJakartaSans(
+                            color: cardGlow,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w800,
+                            letterSpacing: -0.3,
+                          ),
+                        ),
+                        Container(
+                          width: 8,
+                          height: 8,
+                          decoration: BoxDecoration(
+                            color: cardGlow.withValues(alpha: 0.7),
+                            shape: BoxShape.circle,
+                          ),
+                        ),
+                      ],
                     ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 8),
                     Text(
                       m.label,
                       style: GoogleFonts.plusJakartaSans(
                         color: AppColors.textPrimary,
-                        fontSize: 13.5,
+                        fontSize: 14,
                         fontWeight: FontWeight.w700,
                       ),
                     ),
@@ -339,7 +348,7 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
                       style: GoogleFonts.jetBrainsMono(
                         color: AppColors.textMuted,
                         fontSize: 11,
-                        height: 1.4,
+                        height: 1.45,
                       ),
                     ),
                   ],
@@ -353,20 +362,141 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
   }
 
   Widget _skillBadge(String label, {bool isAccent = false}) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
-      decoration: BoxDecoration(
-        color: isAccent ? AppColors.accentMuted : const Color(0x0AFFFFFF),
-        borderRadius: BorderRadius.circular(6),
-        border: Border.all(color: isAccent ? AppColors.borderAccent : AppColors.borderSubtle),
-      ),
-      child: Text(
-        label,
-        style: GoogleFonts.jetBrainsMono(
-          color: isAccent ? AppColors.accentPrimary : AppColors.textSecondary,
-          fontSize: 12,
-          fontWeight: isAccent ? FontWeight.w600 : FontWeight.w500,
+    return _InteractiveSkillBadge(label: label, isAccent: isAccent);
+  }
+}
+
+class _InteractiveSkillBadge extends StatefulWidget {
+  final String label;
+  final bool isAccent;
+
+  const _InteractiveSkillBadge({required this.label, this.isAccent = false});
+
+  @override
+  State<_InteractiveSkillBadge> createState() => _InteractiveSkillBadgeState();
+}
+
+class _InteractiveSkillBadgeState extends State<_InteractiveSkillBadge> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 180),
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+        decoration: BoxDecoration(
+          color: _isHovered
+              ? AppColors.accentPrimary.withValues(alpha: 0.18)
+              : (widget.isAccent ? AppColors.accentMuted : const Color(0x0AFFFFFF)),
+          borderRadius: BorderRadius.circular(6),
+          border: Border.all(
+            color: _isHovered
+                ? AppColors.accentPrimary
+                : (widget.isAccent ? AppColors.borderAccent : AppColors.borderSubtle),
+            width: _isHovered ? 1.2 : 1.0,
+          ),
+          boxShadow: _isHovered
+              ? [
+                  BoxShadow(
+                    color: AppColors.accentPrimary.withValues(alpha: 0.25),
+                    blurRadius: 8,
+                  ),
+                ]
+              : null,
         ),
+        child: Text(
+          widget.label,
+          style: GoogleFonts.jetBrainsMono(
+            color: _isHovered
+                ? AppColors.accentPrimary
+                : (widget.isAccent ? AppColors.accentPrimary : AppColors.textSecondary),
+            fontSize: 12,
+            fontWeight: widget.isAccent || _isHovered ? FontWeight.w600 : FontWeight.w500,
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class _AnimatedActionButton extends StatefulWidget {
+  final VoidCallback onPressed;
+  final IconData icon;
+  final String label;
+  final bool isPrimary;
+  final bool isMonospace;
+
+  const _AnimatedActionButton({
+    required this.onPressed,
+    required this.icon,
+    required this.label,
+    required this.isPrimary,
+    this.isMonospace = false,
+  });
+
+  @override
+  State<_AnimatedActionButton> createState() => _AnimatedActionButtonState();
+}
+
+class _AnimatedActionButtonState extends State<_AnimatedActionButton> {
+  bool _isHovered = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return MouseRegion(
+      cursor: SystemMouseCursors.click,
+      onEnter: (_) => setState(() => _isHovered = true),
+      onExit: (_) => setState(() => _isHovered = false),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        curve: Curves.easeOutCubic,
+        transform: Matrix4.translationValues(0.0, _isHovered ? -3.0 : 0.0, 0.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          boxShadow: _isHovered
+              ? [
+                  BoxShadow(
+                    color: (widget.isPrimary ? AppColors.accentPrimary : Colors.white).withValues(alpha: 0.25),
+                    blurRadius: 18,
+                    offset: const Offset(0, 6),
+                  ),
+                ]
+              : null,
+        ),
+        child: widget.isPrimary
+            ? ElevatedButton.icon(
+                onPressed: widget.onPressed,
+                icon: Icon(widget.icon, size: 16),
+                label: Text(widget.label),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: AppColors.accentPrimary,
+                  foregroundColor: const Color(0xFF042F2E),
+                  padding: const EdgeInsets.symmetric(horizontal: 22, vertical: 16),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  textStyle: GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w700, fontSize: 14),
+                ),
+              )
+            : OutlinedButton.icon(
+                onPressed: widget.onPressed,
+                icon: Icon(widget.icon, size: 16),
+                label: Text(widget.label),
+                style: OutlinedButton.styleFrom(
+                  backgroundColor: _isHovered ? Colors.white.withValues(alpha: 0.05) : AppColors.bgCard,
+                  foregroundColor: _isHovered ? AppColors.textPrimary : AppColors.textSecondary,
+                  side: BorderSide(
+                    color: _isHovered ? AppColors.accentPrimary : AppColors.borderMedium,
+                    width: _isHovered ? 1.4 : 1.0,
+                  ),
+                  padding: const EdgeInsets.symmetric(horizontal: 18, vertical: 16),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  textStyle: widget.isMonospace
+                      ? GoogleFonts.jetBrainsMono(fontSize: 13, fontWeight: FontWeight.w500)
+                      : GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600, fontSize: 14),
+                ),
+              ),
       ),
     );
   }

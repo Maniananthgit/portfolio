@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../constants/app_colors.dart';
 import '../data/portfolio_data.dart';
+import 'interactive_animations.dart';
 
 class BentoCapabilitiesSection extends StatelessWidget {
   const BentoCapabilitiesSection({super.key});
@@ -124,20 +125,11 @@ class BentoCapabilitiesSection extends StatelessWidget {
         color = AppColors.accentPrimary;
     }
 
-    return Container(
+    return HoverLiftCard(
+      liftOffset: -8.0,
+      glowColor: color,
+      borderColor: color,
       padding: const EdgeInsets.all(24),
-      decoration: BoxDecoration(
-        color: AppColors.bgCard,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColors.borderSubtle),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.35),
-            blurRadius: 16,
-            offset: const Offset(0, 6),
-          ),
-        ],
-      ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         mainAxisAlignment: MainAxisAlignment.spaceBetween,

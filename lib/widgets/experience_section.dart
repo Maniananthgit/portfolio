@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../constants/app_colors.dart';
 import '../data/portfolio_data.dart';
+import 'interactive_animations.dart';
 
 class ExperienceSection extends StatelessWidget {
   const ExperienceSection({super.key});
@@ -68,19 +69,10 @@ class ExperienceSection extends StatelessWidget {
               const SizedBox(height: 36),
 
               // Experience Card
-              Container(
-                decoration: BoxDecoration(
-                  color: AppColors.bgCard,
-                  borderRadius: BorderRadius.circular(20),
-                  border: Border.all(color: AppColors.borderMedium),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.black.withValues(alpha: 0.4),
-                      blurRadius: 20,
-                      offset: const Offset(0, 8),
-                    ),
-                  ],
-                ),
+              HoverLiftCard(
+                liftOffset: -6.0,
+                glowColor: AppColors.accentPrimary,
+                borderRadius: BorderRadius.circular(20),
                 padding: EdgeInsets.all(isDesktop ? 36 : 24),
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,

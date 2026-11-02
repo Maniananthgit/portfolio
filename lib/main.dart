@@ -50,8 +50,9 @@ class PortfolioHomePage extends StatefulWidget {
   State<PortfolioHomePage> createState() => _PortfolioHomePageState();
 }
 
-class _PortfolioHomePageState extends State<PortfolioHomePage> {
+class _PortfolioHomePageState extends State<PortfolioHomePage> with SingleTickerProviderStateMixin {
   final ScrollController _scrollController = ScrollController();
+  late AnimationController _ambientController;
 
   final GlobalKey _heroKey = GlobalKey();
   final GlobalKey _projectsKey = GlobalKey();
@@ -67,6 +68,11 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
   @override
   void initState() {
     super.initState();
+    _ambientController = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 10),
+    )..repeat(reverse: true);
+
     _scrollController.addListener(() {
       final shouldShow = _scrollController.offset > 400;
       if (shouldShow != _showBackToTop) {
@@ -77,6 +83,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
 
   @override
   void dispose() {
+    _ambientController.dispose();
     _scrollController.dispose();
     super.dispose();
   }
@@ -131,44 +138,73 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> {
       backgroundColor: AppColors.bgPrimary,
       body: Stack(
         children: [
-          // Ambient Background Glow Circles
-          Positioned(
-            top: 60,
-            left: 80,
-            child: IgnorePointer(
-              child: Container(
-                width: 500,
-                height: 500,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: RadialGradient(
-                    colors: [
-                      AppColors.accentPrimary.withValues(alpha: 0.06),
-                      Colors.transparent,
-                    ],
+          // Animated Ambient Background Glow Orbs
+          AnimatedBuilder(
+            animation: _ambientController,
+            builder: (context, child) {
+              final t = _ambientController.value;
+              return Stack(
+                children: [
+                  Positioned(
+                    top: 30 + (t * 50),
+                    left: 40 + (t * 60),
+                    child: IgnorePointer(
+                      child: Container(
+                        width: 550 + (t * 80),
+                        height: 550 + (t * 80),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: RadialGradient(
+                            colors: [
+                              AppColors.accentPrimary.withValues(alpha: 0.08 + (t * 0.04)),
+                              Colors.transparent,
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
-          ),
-          Positioned(
-            top: 900,
-            right: 40,
-            child: IgnorePointer(
-              child: Container(
-                width: 600,
-                height: 600,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  gradient: RadialGradient(
-                    colors: [
-                      AppColors.accentSky.withValues(alpha: 0.04),
-                      Colors.transparent,
-                    ],
+                  Positioned(
+                    top: 800 - (t * 60),
+                    right: 20 + (t * 50),
+                    child: IgnorePointer(
+                      child: Container(
+                        width: 600 + (t * 60),
+                        height: 600 + (t * 60),
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: RadialGradient(
+                            colors: [
+                              AppColors.accentSky.withValues(alpha: 0.06 + (t * 0.03)),
+                              Colors.transparent,
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
                   ),
-                ),
-              ),
-            ),
+                  Positioned(
+                    top: 1700 + (t * 40),
+                    left: 60 - (t * 30),
+                    child: IgnorePointer(
+                      child: Container(
+                        width: 500,
+                        height: 500,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          gradient: RadialGradient(
+                            colors: [
+                              const Color(0xFFC084FC).withValues(alpha: 0.05 + (t * 0.03)),
+                              Colors.transparent,
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
+              );
+            },
           ),
 
           // Main Scrollable Page

@@ -3,6 +3,7 @@ import 'package:google_fonts/google_fonts.dart';
 import '../constants/app_colors.dart';
 import '../data/portfolio_data.dart';
 import 'case_study_modal.dart';
+import 'interactive_animations.dart';
 
 class ProjectsSection extends StatelessWidget {
   const ProjectsSection({super.key});
@@ -105,58 +106,53 @@ class ProjectsSection extends StatelessWidget {
   }) {
     final isDesktop = MediaQuery.of(context).size.width >= 1024;
 
-    return Container(
-      decoration: BoxDecoration(
-        color: AppColors.bgCard,
+    return HoverLiftCard(
+      liftOffset: -8.0,
+      glowColor: accentColor,
+      borderColor: accentColor,
+      borderRadius: BorderRadius.circular(20),
+      padding: EdgeInsets.zero,
+      child: ClipRRect(
         borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColors.borderMedium),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withValues(alpha: 0.5),
-            blurRadius: 25,
-            offset: const Offset(0, 10),
-          ),
-        ],
-      ),
-      clipBehavior: Clip.antiAlias,
-      child: isDesktop
-          ? IntrinsicHeight(
-              child: Row(
-                crossAxisAlignment: CrossAxisAlignment.stretch,
+        child: isDesktop
+            ? IntrinsicHeight(
+                child: Row(
+                  crossAxisAlignment: CrossAxisAlignment.stretch,
+                  children: [
+                    Expanded(
+                      flex: 6,
+                      child: Padding(
+                        padding: const EdgeInsets.all(36),
+                        child: _buildProjectDetails(context, project, category, accentColor),
+                      ),
+                    ),
+                    Container(width: 1, color: AppColors.borderSubtle),
+                    Expanded(
+                      flex: 5,
+                      child: Container(
+                        color: const Color(0xFF0C0E14),
+                        padding: const EdgeInsets.all(32),
+                        alignment: Alignment.center,
+                        child: mockup,
+                      ),
+                    ),
+                  ],
+                ),
+              )
+            : Column(
                 children: [
-                  Expanded(
-                    flex: 6,
-                    child: Padding(
-                      padding: const EdgeInsets.all(36),
-                      child: _buildProjectDetails(context, project, category, accentColor),
-                    ),
+                  Padding(
+                    padding: const EdgeInsets.all(24),
+                    child: _buildProjectDetails(context, project, category, accentColor),
                   ),
-                  Container(width: 1, color: AppColors.borderSubtle),
-                  Expanded(
-                    flex: 5,
-                    child: Container(
-                      color: const Color(0xFF0C0E14),
-                      padding: const EdgeInsets.all(32),
-                      alignment: Alignment.center,
-                      child: mockup,
-                    ),
+                  Container(
+                    color: const Color(0xFF0C0E14),
+                    padding: const EdgeInsets.all(20),
+                    child: mockup,
                   ),
                 ],
               ),
-            )
-          : Column(
-              children: [
-                Padding(
-                  padding: const EdgeInsets.all(24),
-                  child: _buildProjectDetails(context, project, category, accentColor),
-                ),
-                Container(
-                  color: const Color(0xFF0C0E14),
-                  padding: const EdgeInsets.all(20),
-                  child: mockup,
-                ),
-              ],
-            ),
+      ),
     );
   }
 
