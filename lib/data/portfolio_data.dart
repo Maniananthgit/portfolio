@@ -11,6 +11,7 @@ class PersonalInfo {
   final String github;
   final String status;
   final String summary;
+  final String resumePdfUrl;
 
   const PersonalInfo({
     required this.name,
@@ -25,6 +26,7 @@ class PersonalInfo {
     required this.github,
     required this.status,
     required this.summary,
+    this.resumePdfUrl = "Maniananth_M_Resume.pdf",
   });
 }
 
@@ -211,6 +213,7 @@ class PortfolioData {
     linkedin: "https://www.linkedin.com/in/maniananth23",
     github: "https://github.com/Maniananthgit",
     status: "Actively interviewing for senior backend & full-stack roles",
+    resumePdfUrl: "Maniananth_M_Resume.pdf",
     summary:
         "Software Engineer with ~3 years of commercial production experience at SPI Equipments India specializing in high-concurrency Python backend architectures, FastAPI microservices, real-time WebSocket pipelines, and full-stack Flutter applications. Proven track record designing scalable RESTful APIs, optimizing PostgreSQL and MySQL relational databases with indexed schemas and connection pooling, and deploying containerized applications with Docker. Experienced in Generative AI (RAG with pgvector), Clean Architecture, and achieving 85%+ automated test coverage with Pytest.",
   );

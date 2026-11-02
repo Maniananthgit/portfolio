@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../constants/app_colors.dart';
 import '../data/portfolio_data.dart';
 
@@ -116,6 +117,15 @@ CERTIFICATIONS & CREDENTIALS
     });
   }
 
+  Future<void> _downloadResumePdf() async {
+    final Uri uri = Uri.base.resolve(PortfolioData.personal.resumePdfUrl);
+    try {
+      await launchUrl(uri, mode: LaunchMode.externalApplication, webOnlyWindowName: '_blank');
+    } catch (e) {
+      debugPrint('Error launching PDF: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
@@ -205,6 +215,18 @@ CERTIFICATIONS & CREDENTIALS
                   Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
+                      OutlinedButton.icon(
+                        onPressed: _downloadResumePdf,
+                        icon: const Icon(Icons.picture_as_pdf_rounded, size: 14),
+                        label: Text(isDesktop ? "Download PDF" : "PDF"),
+                        style: OutlinedButton.styleFrom(
+                          foregroundColor: AppColors.accentSky,
+                          side: const BorderSide(color: AppColors.accentSky, width: 1.2),
+                          padding: EdgeInsets.symmetric(horizontal: isDesktop ? 14 : 9, vertical: 11),
+                          textStyle: GoogleFonts.jetBrainsMono(fontWeight: FontWeight.bold, fontSize: 12),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
                       ElevatedButton.icon(
                         onPressed: _copyResumeText,
                         icon: Icon(_copied ? Icons.check_circle_rounded : Icons.copy_rounded, size: 14),
@@ -430,7 +452,7 @@ CERTIFICATIONS & CREDENTIALS
                     child: Text(
                       _copied
                           ? "✓ Copied 100% clean ATS plaintext to clipboard! Ready to paste into Workday, Greenhouse, Lever, or Taleo."
-                          : "Tip: Click 'Copy Clean Plain Text' above to paste directly into job portal application boxes with 0 parser errors.",
+                          : "Tip: Download the verified ATS PDF or click 'Copy Clean Plain Text' to paste directly into job portals.",
                       style: GoogleFonts.plusJakartaSans(
                         color: _copied ? AppColors.accentEmerald : AppColors.textMuted,
                         fontSize: 12,
@@ -439,6 +461,18 @@ CERTIFICATIONS & CREDENTIALS
                     ),
                   ),
                   const SizedBox(width: 12),
+                  OutlinedButton.icon(
+                    onPressed: _downloadResumePdf,
+                    icon: const Icon(Icons.picture_as_pdf_rounded, size: 15),
+                    label: Text(isDesktop ? "Download ATS PDF" : "PDF"),
+                    style: OutlinedButton.styleFrom(
+                      foregroundColor: AppColors.accentSky,
+                      side: const BorderSide(color: AppColors.accentSky, width: 1.2),
+                      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+                      textStyle: GoogleFonts.jetBrainsMono(fontWeight: FontWeight.bold, fontSize: 12.5),
+                    ),
+                  ),
+                  const SizedBox(width: 8),
                   ElevatedButton.icon(
                     onPressed: _copyResumeText,
                     icon: Icon(_copied ? Icons.check_circle_rounded : Icons.copy_rounded, size: 15),

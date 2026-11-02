@@ -1,6 +1,7 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:url_launcher/url_launcher.dart';
 import '../constants/app_colors.dart';
 import '../data/portfolio_data.dart';
 
@@ -187,11 +188,33 @@ class Navbar extends StatelessWidget {
                     onOpenResume();
                   },
                   icon: const Icon(Icons.description_outlined, size: 16),
-                  label: const Text("View & Print ATS Résumé"),
+                  label: const Text("View & Copy ATS Résumé"),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.accentPrimary,
                     foregroundColor: const Color(0xFF042F2E),
-                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    padding: const EdgeInsets.symmetric(vertical: 13),
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 10),
+              SizedBox(
+                width: double.infinity,
+                child: OutlinedButton.icon(
+                  onPressed: () {
+                    Navigator.pop(ctx);
+                    launchUrl(
+                      Uri.base.resolve(PortfolioData.personal.resumePdfUrl),
+                      mode: LaunchMode.externalApplication,
+                      webOnlyWindowName: '_blank',
+                    );
+                  },
+                  icon: const Icon(Icons.picture_as_pdf_rounded, size: 16),
+                  label: const Text("Download Resume (PDF)"),
+                  style: OutlinedButton.styleFrom(
+                    foregroundColor: AppColors.accentSky,
+                    side: const BorderSide(color: AppColors.accentSky, width: 1.2),
+                    padding: const EdgeInsets.symmetric(vertical: 13),
                     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
                   ),
                 ),

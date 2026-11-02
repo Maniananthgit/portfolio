@@ -47,6 +47,15 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
     });
   }
 
+  Future<void> _downloadResumePdf() async {
+    final Uri uri = Uri.base.resolve(PortfolioData.personal.resumePdfUrl);
+    try {
+      await launchUrl(uri, mode: LaunchMode.externalApplication, webOnlyWindowName: '_blank');
+    } catch (e) {
+      debugPrint('Error launching PDF: $e');
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     final width = MediaQuery.of(context).size.width;
@@ -227,7 +236,13 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
               _AnimatedActionButton(
                 onPressed: widget.onOpenResume,
                 icon: Icons.file_copy_outlined,
-                label: "ATS-Friendly Résumé",
+                label: "ATS Résumé",
+                isPrimary: false,
+              ),
+              _AnimatedActionButton(
+                onPressed: _downloadResumePdf,
+                icon: Icons.picture_as_pdf_rounded,
+                label: "Download PDF",
                 isPrimary: false,
               ),
               _AnimatedActionButton(
