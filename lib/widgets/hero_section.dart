@@ -58,16 +58,49 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
         child: Padding(
           padding: EdgeInsets.symmetric(
             horizontal: isDesktop ? 32 : 16,
-            vertical: isDesktop ? 64 : 40,
+            vertical: isDesktop ? 56 : 36,
           ),
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              _buildExecutiveSummary(isDesktop),
+              if (isDesktop)
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Expanded(
+                      flex: 6,
+                      child: _buildExecutiveSummary(isDesktop),
+                    ),
+                    const SizedBox(width: 36),
+                    Expanded(
+                      flex: 5,
+                      child: StaggeredEntrance(
+                        delay: const Duration(milliseconds: 250),
+                        child: const StepArchitectureFlow(),
+                      ),
+                    ),
+                  ],
+                )
+              else ...[
+                _buildExecutiveSummary(isDesktop),
+                const SizedBox(height: 32),
+                const StepArchitectureFlow(),
+              ],
               const SizedBox(height: 48),
               StaggeredEntrance(
-                delay: const Duration(milliseconds: 500),
+                delay: const Duration(milliseconds: 450),
                 child: _buildMetricsGrid(width),
+              ),
+              const SizedBox(height: 40),
+              StaggeredEntrance(
+                delay: const Duration(milliseconds: 550),
+                child: NextStepTransitionPrompt(
+                  currentStep: "STEP 01",
+                  currentTitle: "System Overview & Core Stack",
+                  nextStep: "STEP 02",
+                  nextTitle: "FEATURED CASE STUDIES",
+                  onProceed: widget.onExploreProjects,
+                ),
               ),
             ],
           ),
@@ -80,9 +113,20 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
+        // Step 01 Section Badge
+        StaggeredEntrance(
+          delay: const Duration(milliseconds: 40),
+          child: const StepSectionBadge(
+            stepNumber: "01",
+            label: "EXECUTIVE OVERVIEW",
+            icon: Icons.terminal_rounded,
+          ),
+        ),
+        const SizedBox(height: 16),
+
         // Availability & Verification Pill with Pulsing Glow Dot
         StaggeredEntrance(
-          delay: const Duration(milliseconds: 50),
+          delay: const Duration(milliseconds: 90),
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 7),
             decoration: BoxDecoration(

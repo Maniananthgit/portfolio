@@ -25,28 +25,10 @@ class ProjectsSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Section Header
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-                decoration: BoxDecoration(
-                  color: AppColors.accentMuted,
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(color: AppColors.borderAccent),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.layers_rounded, color: AppColors.accentPrimary, size: 14),
-                    const SizedBox(width: 8),
-                    Text(
-                      "FEATURED CASE STUDIES",
-                      style: GoogleFonts.jetBrainsMono(
-                        color: AppColors.accentPrimary,
-                        fontSize: 11,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
+              const StepSectionBadge(
+                stepNumber: "02",
+                label: "FEATURED CASE STUDIES",
+                icon: Icons.layers_rounded,
               ),
               const SizedBox(height: 14),
               Text(

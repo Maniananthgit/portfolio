@@ -83,7 +83,42 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> with SingleTicker
       if (shouldShow != _showBackToTop) {
         setState(() => _showBackToTop = shouldShow);
       }
+      _updateActiveSectionOnScroll();
     });
+  }
+
+  void _updateActiveSectionOnScroll() {
+    if (_targetedSectionKey != null) return;
+
+    final keyMap = <String, GlobalKey>{
+      'hero': _heroKey,
+      'projects': _projectsKey,
+      'capabilities': _capabilitiesKey,
+      'experience': _experienceKey,
+      'skills': _skillsKey,
+      'principles': _principlesKey,
+      'about': _aboutKey,
+      'contact': _contactKey,
+    };
+
+    String? currentKey;
+    double minDiff = double.infinity;
+
+    for (final entry in keyMap.entries) {
+      final renderBox = entry.value.currentContext?.findRenderObject() as RenderBox?;
+      if (renderBox != null && renderBox.hasSize) {
+        final position = renderBox.localToGlobal(Offset.zero);
+        final diff = (position.dy - 120).abs();
+        if (position.dy <= 320 && diff < minDiff) {
+          minDiff = diff;
+          currentKey = entry.key;
+        }
+      }
+    }
+
+    if (currentKey != null && currentKey != _activeSectionKey) {
+      setState(() => _activeSectionKey = currentKey!);
+    }
   }
 
   @override
@@ -349,6 +384,20 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> with SingleTicker
               onNavigate: _navigateToSection,
             ),
           ),
+
+          // 5. Desktop Floating Step Journey Rail
+          if (MediaQuery.of(context).size.width >= 1280)
+            Positioned(
+              right: 20,
+              top: 0,
+              bottom: 0,
+              child: Center(
+                child: StepJourneyRail(
+                  activeSectionKey: _activeSectionKey,
+                  onNavigate: _navigateToSection,
+                ),
+              ),
+            ),
         ],
       ),
       floatingActionButton: _showBackToTop

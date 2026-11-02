@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../constants/app_colors.dart';
 import '../data/portfolio_data.dart';
+import 'interactive_animations.dart';
 
 class AboutEducationSection extends StatelessWidget {
   const AboutEducationSection({super.key});
@@ -24,28 +25,10 @@ class AboutEducationSection extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Badge
-              Container(
-                padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 6),
-                decoration: BoxDecoration(
-                  color: AppColors.accentMuted,
-                  borderRadius: BorderRadius.circular(30),
-                  border: Border.all(color: AppColors.borderAccent),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.school_outlined, color: AppColors.accentPrimary, size: 14),
-                    const SizedBox(width: 8),
-                    Text(
-                      "PROFILE & BACKGROUND",
-                      style: GoogleFonts.jetBrainsMono(
-                        color: AppColors.accentPrimary,
-                        fontSize: 11,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                  ],
-                ),
+              const StepSectionBadge(
+                stepNumber: "07",
+                label: "ABOUT & EDUCATION",
+                icon: Icons.school_outlined,
               ),
               const SizedBox(height: 14),
               Text(
