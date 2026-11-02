@@ -63,29 +63,7 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              if (isDesktop)
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Expanded(
-                      flex: 6,
-                      child: _buildExecutiveSummary(isDesktop),
-                    ),
-                    const SizedBox(width: 36),
-                    Expanded(
-                      flex: 5,
-                      child: StaggeredEntrance(
-                        delay: const Duration(milliseconds: 250),
-                        child: const ProfileHighlightCard(),
-                      ),
-                    ),
-                  ],
-                )
-              else ...[
-                _buildExecutiveSummary(isDesktop),
-                const SizedBox(height: 32),
-                const ProfileHighlightCard(),
-              ],
+              _buildExecutiveSummary(isDesktop),
               const SizedBox(height: 48),
               StaggeredEntrance(
                 delay: const Duration(milliseconds: 450),
@@ -110,9 +88,11 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
   }
 
   Widget _buildExecutiveSummary(bool isDesktop) {
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
+    return ConstrainedBox(
+      constraints: const BoxConstraints(maxWidth: 880),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
         // Step 01 Section Badge
         StaggeredEntrance(
           delay: const Duration(milliseconds: 40),
@@ -304,8 +284,9 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
           ),
         ),
       ],
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildMetricsGrid(double screenWidth) {
     final metrics = PortfolioData.metrics;
@@ -541,291 +522,6 @@ class _AnimatedActionButtonState extends State<_AnimatedActionButton> {
                       : GoogleFonts.plusJakartaSans(fontWeight: FontWeight.w600, fontSize: 14),
                 ),
               ),
-      ),
-    );
-  }
-}
-
-/// Simple, elegant profile & core tech highlights card.
-class ProfileHighlightCard extends StatefulWidget {
-  const ProfileHighlightCard({super.key});
-
-  @override
-  State<ProfileHighlightCard> createState() => _ProfileHighlightCardState();
-}
-
-class _ProfileHighlightCardState extends State<ProfileHighlightCard> {
-  bool _isHovered = false;
-
-  @override
-  Widget build(BuildContext context) {
-    final p = PortfolioData.personal;
-
-    return MouseRegion(
-      onEnter: (_) => setState(() => _isHovered = true),
-      onExit: (_) => setState(() => _isHovered = false),
-      child: AnimatedContainer(
-        duration: const Duration(milliseconds: 240),
-        curve: Curves.easeOutCubic,
-        transform: Matrix4.translationValues(0.0, _isHovered ? -5.0 : 0.0, 0.0),
-        padding: const EdgeInsets.all(24),
-        decoration: BoxDecoration(
-          color: const Color(0xFF0D1527).withValues(alpha: 0.92),
-          borderRadius: BorderRadius.circular(22),
-          border: Border.all(
-            color: _isHovered ? AppColors.accentPrimary : AppColors.borderAccent,
-            width: _isHovered ? 1.5 : 1.0,
-          ),
-          boxShadow: [
-            BoxShadow(
-              color: Colors.black.withValues(alpha: 0.45),
-              blurRadius: 28,
-              offset: const Offset(0, 12),
-            ),
-            if (_isHovered)
-              BoxShadow(
-                color: AppColors.accentPrimary.withValues(alpha: 0.20),
-                blurRadius: 36,
-                spreadRadius: 2,
-              ),
-          ],
-        ),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            // Status bar
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
-                  decoration: BoxDecoration(
-                    color: AppColors.accentEmerald.withValues(alpha: 0.15),
-                    borderRadius: BorderRadius.circular(20),
-                    border: Border.all(color: AppColors.accentEmerald.withValues(alpha: 0.4)),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      const PulsingGlowDot(size: 7, color: AppColors.accentEmerald),
-                      const SizedBox(width: 7),
-                      Text(
-                        "OPEN FOR ROLES",
-                        style: GoogleFonts.jetBrainsMono(
-                          color: AppColors.accentEmerald,
-                          fontSize: 10,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    const Icon(Icons.location_on_outlined, color: AppColors.textMuted, size: 14),
-                    const SizedBox(width: 4),
-                    Text(
-                      "Coimbatore, India",
-                      style: GoogleFonts.plusJakartaSans(
-                        color: AppColors.textMuted,
-                        fontSize: 11.5,
-                      ),
-                    ),
-                  ],
-                ),
-              ],
-            ),
-            const SizedBox(height: 20),
-
-            // Profile info row
-            Row(
-              children: [
-                Container(
-                  width: 58,
-                  height: 58,
-                  decoration: BoxDecoration(
-                    shape: BoxShape.circle,
-                    gradient: const LinearGradient(
-                      begin: Alignment.topLeft,
-                      end: Alignment.bottomRight,
-                      colors: [AppColors.accentPrimary, AppColors.accentSky],
-                    ),
-                    boxShadow: [
-                      BoxShadow(
-                        color: AppColors.accentPrimary.withValues(alpha: 0.35),
-                        blurRadius: 16,
-                        offset: const Offset(0, 4),
-                      ),
-                    ],
-                  ),
-                  child: Center(
-                    child: Text(
-                      p.initials,
-                      style: GoogleFonts.plusJakartaSans(
-                        color: const Color(0xFF021B1A),
-                        fontSize: 22,
-                        fontWeight: FontWeight.w900,
-                        letterSpacing: 1.0,
-                      ),
-                    ),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(
-                        p.name,
-                        style: GoogleFonts.plusJakartaSans(
-                          color: AppColors.textPrimary,
-                          fontSize: 20,
-                          fontWeight: FontWeight.w800,
-                          letterSpacing: -0.3,
-                        ),
-                      ),
-                      const SizedBox(height: 3),
-                      Text(
-                        "Python Backend & Full-Stack Architect",
-                        style: GoogleFonts.jetBrainsMono(
-                          color: AppColors.accentPrimary,
-                          fontSize: 12,
-                          fontWeight: FontWeight.w600,
-                        ),
-                      ),
-                      const SizedBox(height: 3),
-                      Text(
-                        "SPI Equipments India (~3 Years)",
-                        style: GoogleFonts.plusJakartaSans(
-                          color: AppColors.textSecondary,
-                          fontSize: 12,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 22),
-
-            // 4 Core Competency Highlights Grid
-            Wrap(
-              spacing: 10,
-              runSpacing: 10,
-              children: [
-                _buildMiniPill("FastAPI & Python", "Async REST APIs", Icons.bolt_rounded, AppColors.accentPrimary),
-                _buildMiniPill("Flutter & Dart", "Mobile & Web Apps", Icons.devices_rounded, AppColors.accentSky),
-                _buildMiniPill("PostgreSQL & MySQL", "ACID & Query Opt", Icons.dns_rounded, AppColors.accentEmerald),
-                _buildMiniPill("Docker & GenAI", "pgvector RAG & CI", Icons.auto_awesome_rounded, const Color(0xFFC084FC)),
-              ],
-            ),
-            const SizedBox(height: 20),
-
-            // Quick Social Links
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
-              decoration: BoxDecoration(
-                color: const Color(0xFF080D1A),
-                borderRadius: BorderRadius.circular(12),
-                border: Border.all(color: AppColors.borderSubtle),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  InkWell(
-                    onTap: () => launchUrl(Uri.parse(p.github)),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.code_rounded, color: AppColors.accentPrimary, size: 16),
-                        const SizedBox(width: 6),
-                        Text(
-                          "GitHub Profile",
-                          style: GoogleFonts.jetBrainsMono(
-                            color: AppColors.accentPrimary,
-                            fontSize: 11.5,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Text("•", style: GoogleFonts.jetBrainsMono(color: AppColors.textMuted)),
-                  InkWell(
-                    onTap: () => launchUrl(Uri.parse(p.linkedin)),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.open_in_new_rounded, color: AppColors.accentSky, size: 14),
-                        const SizedBox(width: 6),
-                        Text(
-                          "LinkedIn Profile",
-                          style: GoogleFonts.jetBrainsMono(
-                            color: AppColors.accentSky,
-                            fontSize: 11.5,
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ],
-        ),
-      ),
-    );
-  }
-
-  Widget _buildMiniPill(String title, String subtitle, IconData icon, Color color) {
-    return Container(
-      width: 195,
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        color: const Color(0xFF090E1B),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: color.withValues(alpha: 0.3)),
-      ),
-      child: Row(
-        children: [
-          Container(
-            padding: const EdgeInsets.all(6),
-            decoration: BoxDecoration(
-              color: color.withValues(alpha: 0.15),
-              borderRadius: BorderRadius.circular(8),
-            ),
-            child: Icon(icon, color: color, size: 16),
-          ),
-          const SizedBox(width: 8),
-          Expanded(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              mainAxisSize: MainAxisSize.min,
-              children: [
-                Text(
-                  title,
-                  style: GoogleFonts.plusJakartaSans(
-                    color: AppColors.textPrimary,
-                    fontSize: 11.5,
-                    fontWeight: FontWeight.w700,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-                Text(
-                  subtitle,
-                  style: GoogleFonts.plusJakartaSans(
-                    color: AppColors.textSecondary,
-                    fontSize: 10,
-                  ),
-                  overflow: TextOverflow.ellipsis,
-                ),
-              ],
-            ),
-          ),
-        ],
       ),
     );
   }
