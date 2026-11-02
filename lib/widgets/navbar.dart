@@ -7,11 +7,13 @@ import '../data/portfolio_data.dart';
 class Navbar extends StatelessWidget {
   final VoidCallback onOpenResume;
   final Function(String sectionKey) onNavigate;
+  final String activeSectionKey;
 
   const Navbar({
     super.key,
     required this.onOpenResume,
     required this.onNavigate,
+    this.activeSectionKey = 'hero',
   });
 
   @override
@@ -101,13 +103,41 @@ class Navbar extends StatelessWidget {
                   if (isDesktop)
                     Row(
                       children: [
-                        _NavItem(label: "Projects", onTap: () => onNavigate('projects')),
-                        _NavItem(label: "Capabilities", onTap: () => onNavigate('capabilities')),
-                        _NavItem(label: "Experience", onTap: () => onNavigate('experience')),
-                        _NavItem(label: "Competencies", onTap: () => onNavigate('skills')),
-                        _NavItem(label: "Principles", onTap: () => onNavigate('principles')),
-                        _NavItem(label: "About", onTap: () => onNavigate('about')),
-                        _NavItem(label: "Contact", onTap: () => onNavigate('contact')),
+                        _NavItem(
+                          label: "Projects",
+                          isActive: activeSectionKey == 'projects',
+                          onTap: () => onNavigate('projects'),
+                        ),
+                        _NavItem(
+                          label: "Capabilities",
+                          isActive: activeSectionKey == 'capabilities',
+                          onTap: () => onNavigate('capabilities'),
+                        ),
+                        _NavItem(
+                          label: "Experience",
+                          isActive: activeSectionKey == 'experience',
+                          onTap: () => onNavigate('experience'),
+                        ),
+                        _NavItem(
+                          label: "Competencies",
+                          isActive: activeSectionKey == 'skills',
+                          onTap: () => onNavigate('skills'),
+                        ),
+                        _NavItem(
+                          label: "Principles",
+                          isActive: activeSectionKey == 'principles',
+                          onTap: () => onNavigate('principles'),
+                        ),
+                        _NavItem(
+                          label: "About",
+                          isActive: activeSectionKey == 'about',
+                          onTap: () => onNavigate('about'),
+                        ),
+                        _NavItem(
+                          label: "Contact",
+                          isActive: activeSectionKey == 'contact',
+                          onTap: () => onNavigate('contact'),
+                        ),
                         const SizedBox(width: 16),
                         _ResumeNavButton(onPressed: onOpenResume),
                       ],
@@ -174,12 +204,18 @@ class Navbar extends StatelessWidget {
   }
 
   Widget _drawerItem(BuildContext context, String title, IconData icon, String key) {
+    final isCurrent = activeSectionKey == key;
     return ListTile(
-      leading: Icon(icon, color: AppColors.accentPrimary, size: 20),
+      leading: Icon(icon, color: isCurrent ? AppColors.accentPrimary : AppColors.textSecondary, size: 20),
       title: Text(
         title,
-        style: GoogleFonts.plusJakartaSans(color: AppColors.textPrimary, fontSize: 14.5, fontWeight: FontWeight.w600),
+        style: GoogleFonts.plusJakartaSans(
+          color: isCurrent ? AppColors.accentPrimary : AppColors.textPrimary,
+          fontSize: 14.5,
+          fontWeight: isCurrent ? FontWeight.bold : FontWeight.w600,
+        ),
       ),
+      trailing: isCurrent ? const Icon(Icons.circle, color: AppColors.accentPrimary, size: 8) : null,
       onTap: () {
         Navigator.pop(context);
         onNavigate(key);
@@ -192,9 +228,14 @@ class Navbar extends StatelessWidget {
 
 class _NavItem extends StatefulWidget {
   final String label;
+  final bool isActive;
   final VoidCallback onTap;
 
-  const _NavItem({required this.label, required this.onTap});
+  const _NavItem({
+    required this.label,
+    this.isActive = false,
+    required this.onTap,
+  });
 
   @override
   State<_NavItem> createState() => _NavItemState();
@@ -205,6 +246,8 @@ class _NavItemState extends State<_NavItem> {
 
   @override
   Widget build(BuildContext context) {
+    final highlighted = widget.isActive || _isHovered;
+
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       onEnter: (_) => setState(() => _isHovered = true),
@@ -212,11 +255,16 @@ class _NavItemState extends State<_NavItem> {
       child: GestureDetector(
         onTap: widget.onTap,
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 180),
+          duration: const Duration(milliseconds: 200),
           padding: const EdgeInsets.symmetric(horizontal: 11, vertical: 8),
           decoration: BoxDecoration(
-            color: _isHovered ? AppColors.accentPrimary.withValues(alpha: 0.1) : Colors.transparent,
+            color: widget.isActive
+                ? AppColors.accentPrimary.withValues(alpha: 0.14)
+                : (_isHovered ? AppColors.accentPrimary.withValues(alpha: 0.08) : Colors.transparent),
             borderRadius: BorderRadius.circular(8),
+            border: widget.isActive
+                ? Border.all(color: AppColors.accentPrimary.withValues(alpha: 0.4), width: 1)
+                : null,
           ),
           child: Column(
             mainAxisSize: MainAxisSize.min,
@@ -224,24 +272,24 @@ class _NavItemState extends State<_NavItem> {
               Text(
                 widget.label,
                 style: GoogleFonts.plusJakartaSans(
-                  color: _isHovered ? AppColors.accentPrimary : AppColors.textSecondary,
+                  color: highlighted ? AppColors.accentPrimary : AppColors.textSecondary,
                   fontSize: 13.5,
-                  fontWeight: _isHovered ? FontWeight.w600 : FontWeight.w500,
+                  fontWeight: widget.isActive ? FontWeight.w700 : (_isHovered ? FontWeight.w600 : FontWeight.w500),
                 ),
               ),
               const SizedBox(height: 2),
               AnimatedContainer(
-                duration: const Duration(milliseconds: 180),
-                width: _isHovered ? 16 : 0,
+                duration: const Duration(milliseconds: 200),
+                width: highlighted ? (widget.isActive ? 20 : 14) : 0,
                 height: 2,
                 decoration: BoxDecoration(
                   color: AppColors.accentPrimary,
                   borderRadius: BorderRadius.circular(1),
-                  boxShadow: _isHovered
+                  boxShadow: highlighted
                       ? [
                           BoxShadow(
                             color: AppColors.accentPrimary.withValues(alpha: 0.8),
-                            blurRadius: 4,
+                            blurRadius: 5,
                           ),
                         ]
                       : null,

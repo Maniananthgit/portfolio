@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'constants/app_colors.dart';
@@ -12,6 +13,7 @@ import 'widgets/about_education_section.dart';
 import 'widgets/contact_section.dart';
 import 'widgets/footer_section.dart';
 import 'widgets/ats_resume_dialog.dart';
+import 'widgets/interactive_animations.dart';
 
 void main() {
   WidgetsFlutterBinding.ensureInitialized();
@@ -64,6 +66,9 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> with SingleTicker
   final GlobalKey _contactKey = GlobalKey();
 
   bool _showBackToTop = false;
+  String _activeSectionKey = 'hero';
+  String? _targetedSectionKey;
+  Timer? _targetResetTimer;
 
   @override
   void initState() {
@@ -83,6 +88,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> with SingleTicker
 
   @override
   void dispose() {
+    _targetResetTimer?.cancel();
     _ambientController.dispose();
     _scrollController.dispose();
     super.dispose();
@@ -93,16 +99,26 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> with SingleTicker
     if (context != null) {
       Scrollable.ensureVisible(
         context,
-        duration: const Duration(milliseconds: 650),
+        duration: const Duration(milliseconds: 700),
         curve: Curves.easeInOutCubic,
       );
     }
   }
 
   void _navigateToSection(String sectionKey) {
+    setState(() {
+      _activeSectionKey = sectionKey;
+      _targetedSectionKey = sectionKey;
+    });
+
+    _targetResetTimer?.cancel();
+    _targetResetTimer = Timer(const Duration(milliseconds: 1400), () {
+      if (mounted) setState(() => _targetedSectionKey = null);
+    });
+
     switch (sectionKey) {
       case 'hero':
-        _scrollController.animateTo(0, duration: const Duration(milliseconds: 650), curve: Curves.easeInOutCubic);
+        _scrollController.animateTo(0, duration: const Duration(milliseconds: 700), curve: Curves.easeInOutCubic);
         break;
       case 'projects':
         _scrollToKey(_projectsKey);
@@ -138,7 +154,14 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> with SingleTicker
       backgroundColor: AppColors.bgPrimary,
       body: Stack(
         children: [
-          // Animated Ambient Background Glow Orbs
+          // 1. Constellation Particle Animation (60fps Canvas)
+          const Positioned.fill(
+            child: IgnorePointer(
+              child: ParticleBackground(particleCount: 52),
+            ),
+          ),
+
+          // 2. Animated Ambient Background Glow Orbs
           AnimatedBuilder(
             animation: _ambientController,
             builder: (context, child) {
@@ -207,7 +230,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> with SingleTicker
             },
           ),
 
-          // Main Scrollable Page
+          // 3. Main Scrollable Page
           SingleChildScrollView(
             controller: _scrollController,
             child: Column(
@@ -216,69 +239,93 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> with SingleTicker
                 const SizedBox(height: 70),
 
                 // Hero Section
-                Container(
-                  key: _heroKey,
-                  child: HeroSection(
-                    onOpenResume: _openResume,
-                    onExploreProjects: () => _scrollToKey(_projectsKey),
+                AnimatedSectionWrapper(
+                  isTargeted: _targetedSectionKey == 'hero',
+                  child: Container(
+                    key: _heroKey,
+                    child: HeroSection(
+                      onOpenResume: _openResume,
+                      onExploreProjects: () => _navigateToSection('projects'),
+                    ),
                   ),
                 ),
 
-                const Divider(color: AppColors.borderSubtle, height: 1),
+                const AnimatedBeamDivider(),
 
                 // Projects Section
-                Container(
-                  key: _projectsKey,
-                  child: const ProjectsSection(),
+                AnimatedSectionWrapper(
+                  isTargeted: _targetedSectionKey == 'projects',
+                  child: Container(
+                    key: _projectsKey,
+                    child: const ProjectsSection(),
+                  ),
                 ),
 
-                const Divider(color: AppColors.borderSubtle, height: 1),
+                const AnimatedBeamDivider(),
 
                 // Bento Capabilities Section
-                Container(
-                  key: _capabilitiesKey,
-                  child: const BentoCapabilitiesSection(),
+                AnimatedSectionWrapper(
+                  isTargeted: _targetedSectionKey == 'capabilities',
+                  child: Container(
+                    key: _capabilitiesKey,
+                    child: const BentoCapabilitiesSection(),
+                  ),
                 ),
 
-                const Divider(color: AppColors.borderSubtle, height: 1),
+                const AnimatedBeamDivider(),
 
                 // Commercial Experience Section
-                Container(
-                  key: _experienceKey,
-                  child: const ExperienceSection(),
+                AnimatedSectionWrapper(
+                  isTargeted: _targetedSectionKey == 'experience',
+                  child: Container(
+                    key: _experienceKey,
+                    child: const ExperienceSection(),
+                  ),
                 ),
 
-                const Divider(color: AppColors.borderSubtle, height: 1),
+                const AnimatedBeamDivider(),
 
                 // Competency Matrix Section
-                Container(
-                  key: _skillsKey,
-                  child: const CompetenciesSection(),
+                AnimatedSectionWrapper(
+                  isTargeted: _targetedSectionKey == 'skills',
+                  child: Container(
+                    key: _skillsKey,
+                    child: const CompetenciesSection(),
+                  ),
                 ),
 
-                const Divider(color: AppColors.borderSubtle, height: 1),
+                const AnimatedBeamDivider(),
 
                 // Engineering Principles Section
-                Container(
-                  key: _principlesKey,
-                  child: const PrinciplesSection(),
+                AnimatedSectionWrapper(
+                  isTargeted: _targetedSectionKey == 'principles',
+                  child: Container(
+                    key: _principlesKey,
+                    child: const PrinciplesSection(),
+                  ),
                 ),
 
-                const Divider(color: AppColors.borderSubtle, height: 1),
+                const AnimatedBeamDivider(),
 
                 // About & Education Section
-                Container(
-                  key: _aboutKey,
-                  child: const AboutEducationSection(),
+                AnimatedSectionWrapper(
+                  isTargeted: _targetedSectionKey == 'about',
+                  child: Container(
+                    key: _aboutKey,
+                    child: const AboutEducationSection(),
+                  ),
                 ),
 
-                const Divider(color: AppColors.borderSubtle, height: 1),
+                const AnimatedBeamDivider(),
 
                 // Direct Contact Section
-                Container(
-                  key: _contactKey,
-                  child: ContactSection(
-                    onOpenResume: _openResume,
+                AnimatedSectionWrapper(
+                  isTargeted: _targetedSectionKey == 'contact',
+                  child: Container(
+                    key: _contactKey,
+                    child: ContactSection(
+                      onOpenResume: _openResume,
+                    ),
                   ),
                 ),
 
@@ -291,12 +338,13 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> with SingleTicker
             ),
           ),
 
-          // Sticky Top Navbar
+          // 4. Sticky Top Navbar with Active Topic Indicators
           Positioned(
             top: 0,
             left: 0,
             right: 0,
             child: Navbar(
+              activeSectionKey: _activeSectionKey,
               onOpenResume: _openResume,
               onNavigate: _navigateToSection,
             ),
@@ -312,11 +360,7 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> with SingleTicker
                 side: const BorderSide(color: AppColors.borderAccent),
               ),
               onPressed: () {
-                _scrollController.animateTo(
-                  0,
-                  duration: const Duration(milliseconds: 650),
-                  curve: Curves.easeInOutCubic,
-                );
+                _navigateToSection('hero');
               },
               child: const Icon(Icons.arrow_upward_rounded, size: 18),
             )

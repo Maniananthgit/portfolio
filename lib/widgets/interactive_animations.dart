@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import '../constants/app_colors.dart';
 
@@ -205,4 +206,315 @@ class _PulsingGlowDotState extends State<PulsingGlowDot> with SingleTickerProvid
       },
     );
   }
+}
+
+/// Section wrapper that highlights and animates when navigated to or activated.
+class AnimatedSectionWrapper extends StatefulWidget {
+  final Widget child;
+  final bool isTargeted;
+
+  const AnimatedSectionWrapper({
+    super.key,
+    required this.child,
+    this.isTargeted = false,
+  });
+
+  @override
+  State<AnimatedSectionWrapper> createState() => _AnimatedSectionWrapperState();
+}
+
+class _AnimatedSectionWrapperState extends State<AnimatedSectionWrapper> with SingleTickerProviderStateMixin {
+  late AnimationController _highlightController;
+  late Animation<double> _glowAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _highlightController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 1200),
+    );
+    _glowAnimation = CurvedAnimation(
+      parent: _highlightController,
+      curve: Curves.easeInOut,
+    );
+  }
+
+  @override
+  void didUpdateWidget(covariant AnimatedSectionWrapper oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.isTargeted && !oldWidget.isTargeted) {
+      _highlightController.forward(from: 0.0).then((_) {
+        if (mounted) _highlightController.reverse();
+      });
+    }
+  }
+
+  @override
+  void dispose() {
+    _highlightController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _glowAnimation,
+      builder: (context, child) {
+        final glowValue = _glowAnimation.value;
+        return Container(
+          decoration: BoxDecoration(
+            boxShadow: glowValue > 0.05
+                ? [
+                    BoxShadow(
+                      color: AppColors.accentPrimary.withValues(alpha: glowValue * 0.18),
+                      blurRadius: 36 * glowValue,
+                      spreadRadius: 2 * glowValue,
+                    ),
+                  ]
+                : null,
+          ),
+          child: widget.child,
+        );
+      },
+    );
+  }
+}
+
+/// Cybernetic animated divider with a moving light beam traveling across the border.
+class AnimatedBeamDivider extends StatefulWidget {
+  final Color baseColor;
+  final Color beamColor;
+
+  const AnimatedBeamDivider({
+    super.key,
+    this.baseColor = AppColors.borderSubtle,
+    this.beamColor = AppColors.accentPrimary,
+  });
+
+  @override
+  State<AnimatedBeamDivider> createState() => _AnimatedBeamDividerState();
+}
+
+class _AnimatedBeamDividerState extends State<AnimatedBeamDivider> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 4),
+    )..repeat();
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return AnimatedBuilder(
+      animation: _controller,
+      builder: (context, child) {
+        final t = _controller.value;
+        return Container(
+          height: 1.5,
+          width: double.infinity,
+          decoration: BoxDecoration(
+            gradient: LinearGradient(
+              begin: Alignment.centerLeft,
+              end: Alignment.centerRight,
+              stops: [
+                0.0,
+                (t - 0.15).clamp(0.0, 1.0),
+                t.clamp(0.0, 1.0),
+                (t + 0.15).clamp(0.0, 1.0),
+                1.0,
+              ],
+              colors: [
+                widget.baseColor,
+                widget.baseColor,
+                widget.beamColor.withValues(alpha: 0.9),
+                widget.baseColor,
+                widget.baseColor,
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+}
+
+/// Particle model for the dynamic tech constellation canvas.
+class _Particle {
+  double x;
+  double y;
+  double vx;
+  double vy;
+  double radius;
+  Color color;
+  double pulsePhase;
+
+  _Particle({
+    required this.x,
+    required this.y,
+    required this.vx,
+    required this.vy,
+    required this.radius,
+    required this.color,
+    required this.pulsePhase,
+  });
+}
+
+/// Real-time 60fps tech constellation particle background.
+class ParticleBackground extends StatefulWidget {
+  final int particleCount;
+
+  const ParticleBackground({
+    super.key,
+    this.particleCount = 50,
+  });
+
+  @override
+  State<ParticleBackground> createState() => _ParticleBackgroundState();
+}
+
+class _ParticleBackgroundState extends State<ParticleBackground> with SingleTickerProviderStateMixin {
+  late AnimationController _controller;
+  final List<_Particle> _particles = [];
+  final Random _random = Random(42);
+  bool _initialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    _controller = AnimationController(
+      vsync: this,
+      duration: const Duration(seconds: 1),
+    )..repeat();
+  }
+
+  void _initParticles(Size size) {
+    if (_initialized || size.width == 0 || size.height == 0) return;
+    _initialized = true;
+
+    final colors = [
+      AppColors.accentPrimary.withValues(alpha: 0.85),
+      AppColors.accentSky.withValues(alpha: 0.8),
+      const Color(0xFFC084FC).withValues(alpha: 0.75),
+      Colors.white.withValues(alpha: 0.6),
+    ];
+
+    for (int i = 0; i < widget.particleCount; i++) {
+      _particles.add(
+        _Particle(
+          x: _random.nextDouble() * size.width,
+          y: _random.nextDouble() * size.height,
+          vx: (_random.nextDouble() - 0.5) * 0.45,
+          vy: (_random.nextDouble() - 0.5) * 0.45,
+          radius: 1.2 + (_random.nextDouble() * 2.2),
+          color: colors[_random.nextInt(colors.length)],
+          pulsePhase: _random.nextDouble() * 2 * pi,
+        ),
+      );
+    }
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final size = Size(constraints.maxWidth, constraints.maxHeight);
+        _initParticles(size);
+
+        return AnimatedBuilder(
+          animation: _controller,
+          builder: (context, child) {
+            return CustomPaint(
+              size: size,
+              painter: _ParticlePainter(
+                particles: _particles,
+                size: size,
+              ),
+            );
+          },
+        );
+      },
+    );
+  }
+}
+
+class _ParticlePainter extends CustomPainter {
+  final List<_Particle> particles;
+  final Size size;
+
+  _ParticlePainter({
+    required this.particles,
+    required this.size,
+  });
+
+  @override
+  void paint(Canvas canvas, Size canvasSize) {
+    if (particles.isEmpty || canvasSize.width == 0 || canvasSize.height == 0) return;
+
+    final linePaint = Paint()
+      ..strokeWidth = 0.8
+      ..isAntiAlias = true;
+
+    final particlePaint = Paint()..isAntiAlias = true;
+
+    // 1. Update positions and draw connecting lines
+    for (int i = 0; i < particles.length; i++) {
+      final p1 = particles[i];
+
+      p1.x += p1.vx;
+      p1.y += p1.vy;
+
+      // Wrap boundaries
+      if (p1.x < 0) p1.x = canvasSize.width;
+      if (p1.x > canvasSize.width) p1.x = 0;
+      if (p1.y < 0) p1.y = canvasSize.height;
+      if (p1.y > canvasSize.height) p1.y = 0;
+
+      // Draw links between nearby particles
+      for (int j = i + 1; j < particles.length; j++) {
+        final p2 = particles[j];
+        final dx = p1.x - p2.x;
+        final dy = p1.y - p2.y;
+        final dist = sqrt(dx * dx + dy * dy);
+
+        const maxDist = 110.0;
+        if (dist < maxDist) {
+          final alpha = (1.0 - (dist / maxDist)) * 0.22;
+          linePaint.color = p1.color.withValues(alpha: alpha);
+          canvas.drawLine(Offset(p1.x, p1.y), Offset(p2.x, p2.y), linePaint);
+        }
+      }
+    }
+
+    // 2. Draw particle nodes with soft bloom
+    for (final p in particles) {
+      particlePaint.color = p.color;
+      canvas.drawCircle(Offset(p.x, p.y), p.radius, particlePaint);
+
+      // Soft glow aura
+      final glowPaint = Paint()
+        ..color = p.color.withValues(alpha: 0.15)
+        ..maskFilter = const MaskFilter.blur(BlurStyle.normal, 4);
+      canvas.drawCircle(Offset(p.x, p.y), p.radius * 2.2, glowPaint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _ParticlePainter oldDelegate) => true;
 }
