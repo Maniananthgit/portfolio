@@ -273,9 +273,12 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> with SingleTicker
                 // Top Offset for fixed/sticky navbar
                 const SizedBox(height: 70),
 
-                // Hero Section
+                // Hero Section (Step 01)
                 AnimatedSectionWrapper(
                   isTargeted: _targetedSectionKey == 'hero',
+                  scrollController: _scrollController,
+                  slideFromLeft: true,
+                  insideOut: true,
                   child: Container(
                     key: _heroKey,
                     child: HeroSection(
@@ -287,9 +290,12 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> with SingleTicker
 
                 const AnimatedBeamDivider(),
 
-                // Projects Section
+                // Projects Section (Step 02)
                 AnimatedSectionWrapper(
                   isTargeted: _targetedSectionKey == 'projects',
+                  scrollController: _scrollController,
+                  slideFromLeft: true,
+                  insideOut: true,
                   child: Container(
                     key: _projectsKey,
                     child: const ProjectsSection(),
@@ -298,9 +304,12 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> with SingleTicker
 
                 const AnimatedBeamDivider(),
 
-                // Bento Capabilities Section
+                // Bento Capabilities Section (Step 03)
                 AnimatedSectionWrapper(
                   isTargeted: _targetedSectionKey == 'capabilities',
+                  scrollController: _scrollController,
+                  slideFromLeft: false,
+                  insideOut: true,
                   child: Container(
                     key: _capabilitiesKey,
                     child: const BentoCapabilitiesSection(),
@@ -309,9 +318,12 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> with SingleTicker
 
                 const AnimatedBeamDivider(),
 
-                // Commercial Experience Section
+                // Commercial Experience Section (Step 04)
                 AnimatedSectionWrapper(
                   isTargeted: _targetedSectionKey == 'experience',
+                  scrollController: _scrollController,
+                  slideFromLeft: true,
+                  insideOut: true,
                   child: Container(
                     key: _experienceKey,
                     child: const ExperienceSection(),
@@ -320,9 +332,12 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> with SingleTicker
 
                 const AnimatedBeamDivider(),
 
-                // Competency Matrix Section
+                // Competency Matrix Section (Step 05)
                 AnimatedSectionWrapper(
                   isTargeted: _targetedSectionKey == 'skills',
+                  scrollController: _scrollController,
+                  slideFromLeft: false,
+                  insideOut: true,
                   child: Container(
                     key: _skillsKey,
                     child: const CompetenciesSection(),
@@ -331,9 +346,12 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> with SingleTicker
 
                 const AnimatedBeamDivider(),
 
-                // Engineering Principles Section
+                // Engineering Principles Section (Step 06)
                 AnimatedSectionWrapper(
                   isTargeted: _targetedSectionKey == 'principles',
+                  scrollController: _scrollController,
+                  slideFromLeft: true,
+                  insideOut: true,
                   child: Container(
                     key: _principlesKey,
                     child: const PrinciplesSection(),
@@ -342,9 +360,12 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> with SingleTicker
 
                 const AnimatedBeamDivider(),
 
-                // About & Education Section
+                // About & Education Section (Step 07)
                 AnimatedSectionWrapper(
                   isTargeted: _targetedSectionKey == 'about',
+                  scrollController: _scrollController,
+                  slideFromLeft: false,
+                  insideOut: true,
                   child: Container(
                     key: _aboutKey,
                     child: const AboutEducationSection(),
@@ -353,9 +374,12 @@ class _PortfolioHomePageState extends State<PortfolioHomePage> with SingleTicker
 
                 const AnimatedBeamDivider(),
 
-                // Direct Contact Section
+                // Direct Contact Section (Step 08)
                 AnimatedSectionWrapper(
                   isTargeted: _targetedSectionKey == 'contact',
+                  scrollController: _scrollController,
+                  slideFromLeft: true,
+                  insideOut: true,
                   child: Container(
                     key: _contactKey,
                     child: ContactSection(

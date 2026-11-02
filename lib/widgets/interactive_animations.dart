@@ -209,28 +209,45 @@ class _PulsingGlowDotState extends State<PulsingGlowDot> with SingleTickerProvid
   }
 }
 
-/// Section wrapper that highlights and animates when navigated to or activated.
+/// Section wrapper that highlights and animates when scrolled to or activated.
+/// Supports smooth inside-out zoom and left-inside slide entrance transitions.
 class AnimatedSectionWrapper extends StatefulWidget {
   final Widget child;
   final bool isTargeted;
+  final ScrollController? scrollController;
+  final bool slideFromLeft;
+  final bool insideOut;
+  final Duration duration;
 
   const AnimatedSectionWrapper({
     super.key,
     required this.child,
     this.isTargeted = false,
+    this.scrollController,
+    this.slideFromLeft = true,
+    this.insideOut = true,
+    this.duration = const Duration(milliseconds: 700),
   });
 
   @override
   State<AnimatedSectionWrapper> createState() => _AnimatedSectionWrapperState();
 }
 
-class _AnimatedSectionWrapperState extends State<AnimatedSectionWrapper> with SingleTickerProviderStateMixin {
+class _AnimatedSectionWrapperState extends State<AnimatedSectionWrapper> with TickerProviderStateMixin {
   late AnimationController _highlightController;
   late Animation<double> _glowAnimation;
+
+  late AnimationController _revealController;
+  late Animation<double> _opacity;
+  late Animation<double> _scale;
+  late Animation<Offset> _slide;
+
+  bool _isRevealed = false;
 
   @override
   void initState() {
     super.initState();
+    // 1. Highlight / Focus Pulse
     _highlightController = AnimationController(
       vsync: this,
       duration: const Duration(milliseconds: 1200),
@@ -239,12 +256,77 @@ class _AnimatedSectionWrapperState extends State<AnimatedSectionWrapper> with Si
       parent: _highlightController,
       curve: Curves.easeInOut,
     );
+
+    // 2. Scroll Entrance Reveal (Inside-Out & Left-Inside Slide)
+    _revealController = AnimationController(
+      vsync: this,
+      duration: widget.duration,
+    );
+    _opacity = CurvedAnimation(
+      parent: _revealController,
+      curve: Curves.easeOutCubic,
+    );
+    _scale = Tween<double>(
+      begin: widget.insideOut ? 0.92 : 1.0,
+      end: 1.0,
+    ).animate(CurvedAnimation(
+      parent: _revealController,
+      curve: Curves.easeOutBack,
+    ));
+    _slide = Tween<Offset>(
+      begin: Offset(widget.slideFromLeft ? -45.0 : 45.0, 16.0),
+      end: Offset.zero,
+    ).animate(CurvedAnimation(
+      parent: _revealController,
+      curve: Curves.easeOutCubic,
+    ));
+
+    if (widget.scrollController != null) {
+      widget.scrollController!.addListener(_checkVisibility);
+      WidgetsBinding.instance.addPostFrameCallback((_) => _checkVisibility());
+    } else {
+      _isRevealed = true;
+      _revealController.forward();
+    }
+  }
+
+  void _checkVisibility() {
+    if (!mounted) return;
+    final renderBox = context.findRenderObject() as RenderBox?;
+    if (renderBox == null || !renderBox.hasSize) return;
+
+    final position = renderBox.localToGlobal(Offset.zero);
+    final screenHeight = MediaQuery.of(context).size.height;
+    final triggerThreshold = screenHeight * 0.90;
+
+    final isInViewport = position.dy < triggerThreshold && (position.dy + renderBox.size.height) > 60;
+
+    if (isInViewport) {
+      if (!_isRevealed) {
+        _isRevealed = true;
+        _revealController.forward();
+      }
+    } else if (position.dy > screenHeight + 250) {
+      if (_isRevealed) {
+        _isRevealed = false;
+        _revealController.reset();
+      }
+    }
   }
 
   @override
   void didUpdateWidget(covariant AnimatedSectionWrapper oldWidget) {
     super.didUpdateWidget(oldWidget);
+    if (widget.scrollController != oldWidget.scrollController) {
+      oldWidget.scrollController?.removeListener(_checkVisibility);
+      widget.scrollController?.addListener(_checkVisibility);
+    }
+
     if (widget.isTargeted && !oldWidget.isTargeted) {
+      if (!_isRevealed) {
+        _isRevealed = true;
+        _revealController.forward();
+      }
       _highlightController.forward(from: 0.0).then((_) {
         if (mounted) _highlightController.reverse();
       });
@@ -253,29 +335,45 @@ class _AnimatedSectionWrapperState extends State<AnimatedSectionWrapper> with Si
 
   @override
   void dispose() {
+    widget.scrollController?.removeListener(_checkVisibility);
     _highlightController.dispose();
+    _revealController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return AnimatedBuilder(
-      animation: _glowAnimation,
+      animation: Listenable.merge([_revealController, _highlightController]),
       builder: (context, child) {
         final glowValue = _glowAnimation.value;
-        return Container(
-          decoration: BoxDecoration(
-            boxShadow: glowValue > 0.05
-                ? [
-                    BoxShadow(
-                      color: AppColors.accentPrimary.withValues(alpha: glowValue * 0.18),
-                      blurRadius: 36 * glowValue,
-                      spreadRadius: 2 * glowValue,
-                    ),
-                  ]
-                : null,
+        final scaleValue = _scale.value;
+        final slideValue = _slide.value;
+        final opacityValue = _opacity.value.clamp(0.0, 1.0);
+
+        return Opacity(
+          opacity: opacityValue,
+          child: Transform.translate(
+            offset: slideValue,
+            child: Transform.scale(
+              scale: scaleValue,
+              alignment: widget.slideFromLeft ? Alignment.centerLeft : Alignment.centerRight,
+              child: Container(
+                decoration: BoxDecoration(
+                  boxShadow: glowValue > 0.05
+                      ? [
+                          BoxShadow(
+                            color: AppColors.accentPrimary.withValues(alpha: glowValue * 0.22),
+                            blurRadius: 42 * glowValue,
+                            spreadRadius: 2 * glowValue,
+                          ),
+                        ]
+                      : null,
+                ),
+                child: widget.child,
+              ),
+            ),
           ),
-          child: widget.child,
         );
       },
     );
