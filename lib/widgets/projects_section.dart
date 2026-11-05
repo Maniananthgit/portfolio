@@ -51,23 +51,45 @@ class ProjectsSection extends StatelessWidget {
               ),
               const SizedBox(height: 36),
 
-              // Project 1: Service Management App
+              // Project 1: Service Software
               _buildProjectCard(
                 context: context,
                 project: projects[0],
-                category: "Enterprise Industrial Service",
-                tagline: "Flutter &bull; FastAPI &bull; PostgreSQL",
+                category: "Enterprise Service Platform",
+                tagline: "Flutter &bull; FastAPI &bull; MySQL &bull; FCM",
                 accentColor: AppColors.accentPrimary,
                 mockup: _buildServiceAppMockup(),
               ),
               const SizedBox(height: 48),
 
-              // Project 2: Restaurant KDS
+              // Project 2: ColorChef V4 SCADA
               _buildProjectCard(
                 context: context,
                 project: projects[1],
+                category: "Industrial Automation SCADA",
+                tagline: "Flutter Desktop &bull; RS-232 &bull; Multithreading &bull; SQLite",
+                accentColor: const Color(0xFFC084FC),
+                mockup: _buildColorChefMockup(),
+              ),
+              const SizedBox(height: 48),
+
+              // Project 3: Yarn QC Tester
+              _buildProjectCard(
+                context: context,
+                project: projects[2],
+                category: "Metrology & Textile QC",
+                tagline: "Flutter Desktop &bull; Dual RS-232 &bull; fl_chart &bull; SQLite FFI",
+                accentColor: AppColors.accentEmerald,
+                mockup: _buildYarnTesterMockup(),
+              ),
+              const SizedBox(height: 48),
+
+              // Project 4: Restaurant KDS
+              _buildProjectCard(
+                context: context,
+                project: projects[3],
                 category: "Real-Time Concurrency System",
-                tagline: "FastAPI &bull; WebSockets &bull; MySQL/Postgres",
+                tagline: "Python &bull; FastAPI &bull; Redis &bull; WebSockets &bull; Docker",
                 accentColor: AppColors.accentSky,
                 mockup: _buildKdsMockup(),
               ),
@@ -203,13 +225,14 @@ class ProjectsSection extends StatelessWidget {
             ),
             const SizedBox(height: 20),
 
-            // Bullet Highlights
-            _highlightBullet("Role-Based Access Control (RBAC)", "JWT gates separating Admin, Service Manager & Field Techs.", accentColor),
-            const SizedBox(height: 8),
-            _highlightBullet("Real-Time Dispatch Pipeline", "WebSocket events pushing new tickets directly to field engineers.", accentColor),
-            const SizedBox(height: 8),
-            _highlightBullet("Optimized Relational Schema", "PostgreSQL schema with connection pooling & composite indexing.", accentColor),
-            const SizedBox(height: 24),
+            // Bullet Highlights from Project Key Features
+            ...project.keyFeatures.take(3).map(
+                  (f) => Padding(
+                    padding: const EdgeInsets.only(bottom: 8),
+                    child: _highlightBullet(f.name, f.desc, accentColor),
+                  ),
+                ),
+            const SizedBox(height: 16),
 
             // Tech Stack Chips
             Wrap(
@@ -428,6 +451,207 @@ class ProjectsSection extends StatelessWidget {
           ),
         ],
       ),
+    );
+  }
+
+  Widget _buildColorChefMockup() {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: const Color(0xFF131722),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppColors.borderMedium),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withValues(alpha: 0.6), blurRadius: 20),
+        ],
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            color: const Color(0xFF1C1929),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    const Icon(Icons.precision_manufacturing_rounded, color: Color(0xFFC084FC), size: 16),
+                    const SizedBox(width: 8),
+                    Text(
+                      "ColorChef V4 — SCADA Dosing Engine",
+                      style: GoogleFonts.plusJakartaSans(color: AppColors.textPrimary, fontWeight: FontWeight.bold, fontSize: 12),
+                    ),
+                  ],
+                ),
+                Text(
+                  "ISOLATE: 60 FPS",
+                  style: GoogleFonts.jetBrainsMono(color: AppColors.accentEmerald, fontSize: 10, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: const Color(0xFFC084FC).withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: const Color(0xFFC084FC).withValues(alpha: 0.3)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("BATCH #CC-942 • BEAKER 08/24", style: GoogleFonts.jetBrainsMono(color: const Color(0xFFC084FC), fontWeight: FontWeight.bold, fontSize: 11.5)),
+                          Text("RS-232: DOSING", style: GoogleFonts.jetBrainsMono(color: AppColors.accentAmber, fontWeight: FontWeight.bold, fontSize: 11)),
+                        ],
+                      ),
+                      const SizedBox(height: 8),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("Target: 12.500 g", style: GoogleFonts.jetBrainsMono(color: AppColors.textSecondary, fontSize: 11)),
+                          Text("Actual: 12.498 g", style: GoogleFonts.jetBrainsMono(color: AppColors.accentEmerald, fontWeight: FontWeight.bold, fontSize: 11)),
+                        ],
+                      ),
+                      const SizedBox(height: 6),
+                      ClipRRect(
+                        borderRadius: BorderRadius.circular(4),
+                        child: const LinearProgressIndicator(
+                          value: 0.9998,
+                          backgroundColor: Colors.white12,
+                          valueColor: AlwaysStoppedAnimation<Color>(Color(0xFFC084FC)),
+                          minHeight: 6,
+                        ),
+                      ),
+                      const Divider(color: AppColors.borderSubtle, height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("X: 412.5mm | Y: 180.0mm | Z: 45.2mm", style: GoogleFonts.jetBrainsMono(color: AppColors.textMuted, fontSize: 9.5)),
+                          Text("PRECISION: 99.98%", style: GoogleFonts.jetBrainsMono(color: AppColors.accentEmerald, fontWeight: FontWeight.bold, fontSize: 10)),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+                _ticketItem("REC-041", "Reactive Blue 19 Canister", "Valve Actuation: Step 4/6", "DISPENSING", const Color(0xFFC084FC)),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _buildYarnTesterMockup() {
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: const Color(0xFF131722),
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: AppColors.borderMedium),
+        boxShadow: [
+          BoxShadow(color: Colors.black.withValues(alpha: 0.6), blurRadius: 20),
+        ],
+      ),
+      clipBehavior: Clip.antiAlias,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Container(
+            padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
+            color: const Color(0xFF14221D),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Row(
+                  children: [
+                    const Icon(Icons.show_chart_rounded, color: AppColors.accentEmerald, size: 16),
+                    const SizedBox(width: 8),
+                    Text(
+                      "Yarn QC Metrology & Lea Tester",
+                      style: GoogleFonts.plusJakartaSans(color: AppColors.textPrimary, fontWeight: FontWeight.bold, fontSize: 12),
+                    ),
+                  ],
+                ),
+                Text(
+                  "DUAL RS-232: READY",
+                  style: GoogleFonts.jetBrainsMono(color: AppColors.accentEmerald, fontSize: 10, fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                    color: AppColors.accentEmerald.withValues(alpha: 0.08),
+                    borderRadius: BorderRadius.circular(8),
+                    border: Border.all(color: AppColors.accentEmerald.withValues(alpha: 0.3)),
+                  ),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("SAMPLE: 120 YDS COMBED COTTON", style: GoogleFonts.jetBrainsMono(color: AppColors.accentEmerald, fontWeight: FontWeight.bold, fontSize: 11)),
+                          Text("TEST PASS", style: GoogleFonts.jetBrainsMono(color: AppColors.accentEmerald, fontWeight: FontWeight.bold, fontSize: 11)),
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          _metricPill("COUNT (Ne)", "40.2 Ne"),
+                          _metricPill("BREAK LOAD", "62.4 lbs"),
+                          _metricPill("CSP INDEX", "2,508.5"),
+                          _metricPill("CV%", "1.42%"),
+                        ],
+                      ),
+                      const Divider(color: AppColors.borderSubtle, height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          Text("SQLite FFI: Saved Run #1094", style: GoogleFonts.jetBrainsMono(color: AppColors.textMuted, fontSize: 9.5)),
+                          Text("PDF REPORT GENERATED ✓", style: GoogleFonts.jetBrainsMono(color: AppColors.accentEmerald, fontWeight: FontWeight.bold, fontSize: 10)),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                const SizedBox(height: 10),
+                _ticketItem("TEST-88", "100% Combed Warp Ring Spun", "Breaking Time: 20.4s | Peak: 62.4 lbs", "CERTIFIED", AppColors.accentEmerald),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  Widget _metricPill(String label, String value) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(label, style: GoogleFonts.jetBrainsMono(color: AppColors.textMuted, fontSize: 9.5)),
+        const SizedBox(height: 2),
+        Text(value, style: GoogleFonts.jetBrainsMono(color: AppColors.textPrimary, fontWeight: FontWeight.bold, fontSize: 12)),
+      ],
     );
   }
 

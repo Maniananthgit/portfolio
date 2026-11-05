@@ -26,15 +26,12 @@ class _AtsResumeDialogState extends State<AtsResumeDialog> {
   String _generatePlainTextResume() {
     final p = PortfolioData.personal;
     final exp = PortfolioData.experience[0];
-    final edu = PortfolioData.education[0];
-    final cert = PortfolioData.certifications[0];
-    final projects = PortfolioData.projects;
 
     return '''
 ${p.name.toUpperCase()}
-Software Engineer — Python Backend & Full-Stack Architect
-Email: ${p.email} | Phone: ${p.phone} | Location: ${p.location}
-LinkedIn: ${p.linkedin} | GitHub: ${p.github} | Portfolio: https://maniananth-portfolio.web.app
+Software Developer | Python Backend & Flutter Applications
+Coimbatore, Tamil Nadu, India | ${p.phone} | ${p.email}
+LinkedIn: linkedin.com/in/maniananth23 | GitHub: github.com/Maniananthgit | Portfolio: maniananth-portfolio.web.app
 
 ================================================================================
 PROFESSIONAL SUMMARY
@@ -42,70 +39,51 @@ PROFESSIONAL SUMMARY
 ${p.summary}
 
 ================================================================================
-CORE TECHNICAL SKILLS TAXONOMY
+TECHNICAL SKILLS
 ================================================================================
-• Programming Languages: Python 3.11+, Dart, SQL, Bash / Shell Scripting
-• Backend Frameworks & APIs: FastAPI, Python AsyncIO, Uvicorn, Django, Flask, RESTful API Design, WebSockets, ASGI Channels, Pydantic v2, Swagger / OpenAPI
-• Databases & Data Storage: PostgreSQL, MySQL, SQLite, Redis Caching, SQLAlchemy ORM, Alembic Migrations, Database Indexing, Query Optimization, ACID Compliance
-• AI & Machine Learning: Generative AI, Large Language Models (LLMs), Retrieval-Augmented Generation (RAG), pgvector, LangChain, OpenAI API, Vector Embeddings, Semantic Search
-• Cloud, DevOps & Tools: Docker, Docker Compose, Linux / Ubuntu, AWS (EC2, S3), Nginx Reverse Proxy, Git, GitHub Actions (CI/CD), Postman
-• Architecture & Security: Microservices, Clean Architecture, Event-Driven Architecture, High Concurrency, Non-blocking I/O, Role-Based Access Control (RBAC), JWT, OAuth 2.0
-• Testing & Software Quality: Pytest, Unit Testing, Integration Testing, API Contract Testing, Test-Driven Development (TDD), Structured Error Envelopes, Structured Logging
-• Frontend & Client Engineering: Flutter, Dart, Cross-Platform Web & Mobile, Provider State Management, Offline Data Caching, WebSocket Client Sync
+• Backend: Python, FastAPI, Django, Flask, REST API, Async, SQLAlchemy, Pydantic, Celery, Pytest, RAG (basic knowledge)
+• Databases: PostgreSQL, MySQL, Redis
+• Architecture & Fundamentals: Microservices, MVVM, System Design, Data Structures & Algorithms (DSA)
+• Security & Communication: JWT, OAuth 2.0, RBAC, RSA, WebSockets, MQTT
+• DevOps & Cloud: Docker, Docker Compose, Linux, Nginx, Git, GitHub Actions, CI/CD, AWS, Hostinger VPS
+• Frontend & Tools: Flutter, Dart, Provider, GoRouter, HTML, CSS, Postman, SQL
 
 ================================================================================
-COMMERCIAL WORK EXPERIENCE
+PROFESSIONAL EXPERIENCE
 ================================================================================
-${exp.company} — ${exp.location}
-${exp.role} | ${exp.period} | ${exp.employmentType}
-Core Stack: Python, FastAPI, WebSockets, PostgreSQL, SQLAlchemy, Docker, Flutter, Linux, Pytest
-
-Scope & Overview:
-${exp.description}
-
-Key Quantified Contributions & Achievements:
+${exp.company} — ${exp.role} | ${exp.period} | ${exp.location}
 ${exp.contributions.map((c) => "• $c").join("\n")}
 
 ================================================================================
-KEY ENGINEERING PROJECTS
+SELECTED PROJECTS
 ================================================================================
-1. ${projects[0].title.toUpperCase()}
-Tech Stack: ${projects[0].backend}, ${projects[0].database}, ${projects[0].client}, ${projects[0].deployment}
-Role: Architect & Lead Developer | Subtitle: ${projects[0].subtitle}
-• Overview: ${projects[0].summary}
-• Engineered an asynchronous FastAPI backend paired with a responsive Flutter mobile/tablet interface.
-• Built ASGI WebSocket channels broadcasting live job updates, eliminating polling overhead and reducing field technician dispatch response times by 45%.
-• Structured complex relational audit trails with foreign keys and composite indexes in PostgreSQL, tracking 10,000+ servicing logs, replacement components, and digital sign-offs.
-• Enforced Role-Based Access Control (RBAC) with JWT tokens separating Admin, Service Manager, and Field Technician capabilities.
+1. Service Software — After-Sales & Service Management Application
+Technology: Flutter, Dart, Provider, GoRouter, FastAPI, Python, MySQL, WebSockets, Firebase Cloud Messaging, Docker, Nginx
+• Developed a cross-platform service-management application supporting Admin, Service Engineer, Customer, and Accounts workflows.
+• Built FastAPI endpoints with JWT authentication and role-based access control; implemented real-time updates using WebSockets and Firebase Cloud Messaging.
+• Supported cloud deployment with Docker containers and Nginx reverse-proxy routing.
 
-2. ${projects[1].title.toUpperCase()}
-Tech Stack: ${projects[1].backend}, ${projects[1].database}, ${projects[1].client}
-Role: Architect & Lead Developer | Subtitle: ${projects[1].subtitle}
-• Overview: ${projects[1].summary}
-• Developed an integrated high-concurrency hospitality ordering platform synchronizing self-ordering kiosk terminals with real-time Kitchen Display System (KDS) screens.
-• Implemented client-generated idempotency tokens and transactional database isolation, successfully preventing duplicate orders during network dropouts and rapid tap retries.
-• Segmented WebSocket order broadcasting channels by kitchen preparation station (grill, fryer, assembly), reducing kitchen ticket routing confusion by 40%.
-• Achieved sub-second KOT propagation from customer tap to kitchen display with optimistic UI updates and auto-revert fallback.
+2. ColorChef V4 — Industrial Dye Dispensing SCADA
+Technology: Flutter Desktop, Dart, MVVM, RS-232 Serial, Multithreading, SQLite, Hive
+• Developed an industrial desktop HMI/SCADA application for automated textile dye and chemical dispensing, controlling multi-axis (X/Y/Z) mechanical positions and 24-beaker batch scheduling.
+• Integrated continuous RS-232 industrial weighing scale telemetry using background Dart Isolates for zero-latency dosing precision, storing batch history in an offline SQLite database with PDF/Excel reporting.
 
-3. GENERATIVE AI & RAG KNOWLEDGE SEARCH ENGINE
-Tech Stack: Python 3.11+, FastAPI, LangChain, OpenAI / LLMs, pgvector, PostgreSQL, Docker
-Role: Backend & AI Engineer
-• Architected a Retrieval-Augmented Generation (RAG) platform performing contextual semantic search and automated Q&A across 10,000+ pages of equipment manuals and engineering documentation.
-• Generated high-dimensional vector embeddings stored and indexed in PostgreSQL via pgvector, achieving <200ms semantic similarity retrieval latency with zero hallucination via strict prompt bounding.
-• Built automated tool-calling workflows and RESTful query endpoints with structured JSON responses.
+3. Yarn Quality Control & Lea Strength Tester
+Technology: Flutter Desktop, Dart, MVVM, RS-232 Serial, SQLite FFI, fl_chart, PDF Generation
+• Developed an industrial textile QC desktop application to measure yarn tensile breaking strength, automatically calculating Yarn Count (Ne), CSP, Standard Deviation, and CV%.
+• Integrated dual RS-232 serial interfaces for digital precision scales and machine load controllers, generating real-time analytics graphs and certified laboratory PDF test reports.
+
+4. Restaurant Self-Ordering Kiosk & Kitchen Display System
+Technology: Python, FastAPI, PostgreSQL, Redis, WebSockets, Docker Compose, Nginx
+• Designed a restaurant self-ordering workflow connecting customer kiosks with a kitchen display system.
+• Designed FastAPI backend services and PostgreSQL data structures for menu, order, and kitchen workflows, with WebSocket-based real-time order updates and Redis in the architecture.
+• Prepared a containerized deployment using Docker Compose and Nginx.
 
 ================================================================================
-EDUCATION
+EDUCATION & CERTIFICATION
 ================================================================================
-${edu.degree}
-${edu.institution} — ${edu.location} | ${edu.duration} | Grade: ${edu.grade}
-• Strong analytical, mathematical, and algorithmic problem-solving foundation facilitating high-concurrency systems architecture and backend engineering.
-
-================================================================================
-CERTIFICATIONS & CREDENTIALS
-================================================================================
-• ${cert.title} — ${cert.issuer} (${cert.year})
-  Verified Skills: ${cert.skills.join(", ")}
+B.E. — Mechanical Engineering — Adhiyamaan College | 2015 – 2019 | CGPA: 8.01
+Python Full Stack Developer Certification — PUMO TECHNOVATION | 2023
 ''';
   }
 
@@ -290,7 +268,7 @@ CERTIFICATIONS & CREDENTIALS
                           ),
                           const SizedBox(height: 4),
                           Text(
-                            "Software Engineer — Python Backend & Full-Stack Architect",
+                            "Software Developer | Python Backend & Flutter Applications",
                             textAlign: TextAlign.center,
                             style: GoogleFonts.jetBrainsMono(
                               color: AppColors.accentPrimary,
@@ -300,7 +278,7 @@ CERTIFICATIONS & CREDENTIALS
                           ),
                           const SizedBox(height: 8),
                           Text(
-                            "${p.email} • ${p.phone} • ${p.location}",
+                            "Coimbatore, Tamil Nadu, India • ${p.phone} • ${p.email}",
                             textAlign: TextAlign.center,
                             style: GoogleFonts.plusJakartaSans(color: AppColors.textSecondary, fontSize: 13),
                           ),
@@ -323,20 +301,18 @@ CERTIFICATIONS & CREDENTIALS
                     ),
                     const SizedBox(height: 24),
 
-                    // Core Technical Skills Taxonomy
-                    _atsSectionTitle("CORE TECHNICAL SKILLS TAXONOMY"),
-                    _atsSkillRow("Programming Languages", "Python 3.11+, Dart, SQL, Bash / Shell Scripting"),
-                    _atsSkillRow("Backend Frameworks & APIs", "FastAPI, Python AsyncIO, Uvicorn, Django, Flask, RESTful APIs, WebSockets, ASGI Channels, Pydantic v2, Swagger / OpenAPI"),
-                    _atsSkillRow("Databases & Data Storage", "PostgreSQL, MySQL, SQLite, Redis Caching, SQLAlchemy ORM, Alembic Migrations, Indexing, Query Optimization, ACID"),
-                    _atsSkillRow("AI & Machine Learning", "Generative AI, Large Language Models (LLMs), Retrieval-Augmented Generation (RAG), pgvector, LangChain, Vector Embeddings, Semantic Search"),
-                    _atsSkillRow("Cloud, DevOps & Tools", "Docker, Docker Compose, Linux / Ubuntu, AWS (EC2, S3), Nginx Reverse Proxy, Git, GitHub Actions (CI/CD), Postman"),
-                    _atsSkillRow("Architecture & Security", "Microservices, Clean Architecture, Event-Driven Architecture, High Concurrency, Non-blocking I/O, RBAC, JWT, OAuth 2.0"),
-                    _atsSkillRow("Testing & Quality", "Pytest, Unit Testing, Integration Testing, API Contract Testing, Test-Driven Development (TDD), Structured Error Envelopes"),
-                    _atsSkillRow("Frontend & Mobile", "Flutter, Dart, Cross-Platform Web & Mobile, Provider State Management, Offline Data Caching, WebSocket Client Sync"),
+                    // Technical Skills
+                    _atsSectionTitle("TECHNICAL SKILLS"),
+                    _atsSkillRow("Backend", "Python, FastAPI, Django, Flask, REST API, Async, SQLAlchemy, Pydantic, Celery, Pytest, RAG (basic knowledge)"),
+                    _atsSkillRow("Databases", "PostgreSQL, MySQL, Redis"),
+                    _atsSkillRow("Architecture & Fundamentals", "Microservices, MVVM, System Design, Data Structures & Algorithms (DSA)"),
+                    _atsSkillRow("Security & Communication", "JWT, OAuth 2.0, RBAC, RSA, WebSockets, MQTT"),
+                    _atsSkillRow("DevOps & Cloud", "Docker, Docker Compose, Linux, Nginx, Git, GitHub Actions, CI/CD, AWS, Hostinger VPS"),
+                    _atsSkillRow("Frontend & Tools", "Flutter, Dart, Provider, GoRouter, HTML, CSS, Postman, SQL"),
                     const SizedBox(height: 24),
 
-                    // Commercial Experience
-                    _atsSectionTitle("COMMERCIAL WORK EXPERIENCE"),
+                    // Professional Experience
+                    _atsSectionTitle("PROFESSIONAL EXPERIENCE"),
                     Text(
                       exp.company,
                       style: GoogleFonts.plusJakartaSans(color: AppColors.textPrimary, fontSize: 16, fontWeight: FontWeight.bold),
@@ -374,43 +350,51 @@ CERTIFICATIONS & CREDENTIALS
                         )),
                     const SizedBox(height: 24),
 
-                    // Key Engineering Projects
-                    _atsSectionTitle("KEY ENGINEERING PROJECTS"),
+                    // Selected Projects
+                    _atsSectionTitle("SELECTED PROJECTS"),
                     
                     // Project 1
                     _buildProjectItem(
-                      title: "1. Service Management Application (Enterprise Field Dispatch)",
-                      stack: "FastAPI, Python 3.11+, WebSockets, PostgreSQL, SQLAlchemy, Flutter, Docker",
+                      title: "1. Service Software — After-Sales & Service Management Application",
+                      stack: "Flutter, Dart, Provider, GoRouter, FastAPI, Python, MySQL, WebSockets, FCM, Docker, Nginx",
                       bullets: [
-                        "Engineered full-lifecycle field maintenance automation system connecting Admin, Service Managers, and Field Engineers.",
-                        "Bypassed polling latency with bidirectional WebSockets, delivering real-time ticket dispatch alerts and reducing technician response times by 45%.",
-                        "Structured normalized PostgreSQL relational schema with composite B-tree indexing to process 10,000+ servicing history and part replacement logs.",
-                        "Implemented multi-tier Role-Based Access Control (RBAC) with JWT auth separating field, management, and administrative privileges.",
+                        "Developed a cross-platform service-management application supporting Admin, Service Engineer, Customer, and Accounts workflows.",
+                        "Built FastAPI endpoints with JWT authentication and role-based access control; implemented real-time updates using WebSockets and Firebase Cloud Messaging.",
+                        "Supported cloud deployment with Docker containers and Nginx reverse-proxy routing.",
                       ],
                     ),
                     const SizedBox(height: 16),
 
                     // Project 2
                     _buildProjectItem(
-                      title: "2. Restaurant Self-Ordering & Kitchen Display System (KDS)",
-                      stack: "FastAPI, Python AsyncIO, WebSockets, MySQL, Flutter, Idempotency State Machine",
+                      title: "2. ColorChef V4 — Industrial Dye Dispensing SCADA",
+                      stack: "Flutter Desktop, Dart, MVVM, RS-232 Serial, Multithreading (Dart Isolates), SQLite, Hive",
                       bullets: [
-                        "Architected synchronized restaurant automation platform connecting dining kiosk ordering terminals with real-time Kitchen Display Systems.",
-                        "Eliminated duplicate order submissions during network dropouts by implementing client-side idempotency keys and transactional database locks.",
-                        "Segmented WebSocket order broadcast channels by station (grill, fryer, cold prep), cutting kitchen routing confusion by 40%.",
-                        "Sub-second KOT propagation from customer tap to kitchen display with optimistic UI updates and auto-revert fallback.",
+                        "Developed an industrial desktop HMI/SCADA application for automated textile dye and chemical dispensing, controlling multi-axis (X/Y/Z) mechanical positions and 24-beaker batch scheduling.",
+                        "Integrated continuous RS-232 industrial weighing scale telemetry using background Dart Isolates for zero-latency dosing precision, storing batch history in an offline SQLite database with PDF/Excel reporting.",
                       ],
                     ),
                     const SizedBox(height: 16),
 
                     // Project 3
                     _buildProjectItem(
-                      title: "3. Generative AI Medical & Industrial Knowledge Search Engine (RAG)",
-                      stack: "Python 3.11+, FastAPI, LangChain, OpenAI API, pgvector, PostgreSQL, Docker",
+                      title: "3. Yarn Quality Control & Lea Strength Tester",
+                      stack: "Flutter Desktop, Dart, MVVM, RS-232 Serial, SQLite FFI, fl_chart, PDF Generation",
                       bullets: [
-                        "Designed a Retrieval-Augmented Generation (RAG) platform performing contextual semantic search and automated Q&A across 10,000+ technical manual pages.",
-                        "Indexed high-dimensional vector embeddings in PostgreSQL via pgvector, achieving <200ms semantic similarity retrieval latency.",
-                        "Enforced strict prompt bounding eliminating model hallucinations and delivering verifiable citations to source engineering documentation.",
+                        "Developed an industrial textile QC desktop application to measure yarn tensile breaking strength, automatically calculating Yarn Count (Ne), CSP, Standard Deviation, and CV%.",
+                        "Integrated dual RS-232 serial interfaces for digital precision scales and machine load controllers, generating real-time analytics graphs and certified laboratory PDF test reports.",
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+
+                    // Project 4
+                    _buildProjectItem(
+                      title: "4. Restaurant Self-Ordering Kiosk & Kitchen Display System",
+                      stack: "Python, FastAPI, PostgreSQL, Redis, WebSockets, Docker Compose, Nginx",
+                      bullets: [
+                        "Designed a restaurant self-ordering workflow connecting customer kiosks with a kitchen display system.",
+                        "Designed FastAPI backend services and PostgreSQL data structures for menu, order, and kitchen workflows, with WebSocket-based real-time order updates and Redis in the architecture.",
+                        "Prepared a containerized deployment using Docker Compose and Nginx.",
                       ],
                     ),
                     const SizedBox(height: 24),

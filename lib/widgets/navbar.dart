@@ -87,7 +87,7 @@ class Navbar extends StatelessWidget {
                               ),
                             ),
                             Text(
-                              "Backend & Full-Stack Architect",
+                              "Python Backend & Flutter Apps",
                               style: GoogleFonts.jetBrainsMono(
                                 color: AppColors.textSecondary,
                                 fontSize: 10.5,

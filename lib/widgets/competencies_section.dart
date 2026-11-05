@@ -18,11 +18,9 @@ class _CompetenciesSectionState extends State<CompetenciesSection> {
     {'key': 'all', 'label': 'All Domains', 'icon': Icons.grid_view_rounded},
     {'key': 'backend', 'label': 'Backend Development', 'icon': Icons.dns_rounded},
     {'key': 'database', 'label': 'Databases & Data', 'icon': Icons.storage_rounded},
-    {'key': 'aiGenAi', 'label': 'AI & Generative AI', 'icon': Icons.auto_awesome_rounded},
+    {'key': 'architectureSecurity', 'label': 'Architecture & Security', 'icon': Icons.security_rounded},
     {'key': 'cloudDevops', 'label': 'Cloud & DevOps', 'icon': Icons.cloud_outlined},
-    {'key': 'testingQuality', 'label': 'Testing & Quality', 'icon': Icons.verified_user_outlined},
-    {'key': 'frontendApp', 'label': 'Frontend & Flutter', 'icon': Icons.smartphone_rounded},
-    {'key': 'softwareEng', 'label': 'Software Engineering', 'icon': Icons.code_rounded},
+    {'key': 'frontendApp', 'label': 'Flutter & Desktop HMI', 'icon': Icons.desktop_windows_rounded},
   ];
 
   Map<String, List<SkillItem>> _getFilteredGroups() {
@@ -37,19 +35,15 @@ class _CompetenciesSectionState extends State<CompetenciesSection> {
       case 'backend':
         return 'Backend Development';
       case 'database':
-        return 'Databases & Data Management';
-      case 'aiGenAi':
-        return 'AI & Generative AI';
+        return 'Databases & Storage';
+      case 'architectureSecurity':
+        return 'Architecture, Fundamentals & Security';
       case 'cloudDevops':
-        return 'Cloud & DevOps';
-      case 'testingQuality':
-        return 'Testing & Software Quality';
+        return 'DevOps & Cloud Infrastructure';
       case 'frontendApp':
-        return 'Frontend & Application Development';
-      case 'softwareEng':
-        return 'Software Engineering Fundamentals';
+        return 'Flutter, Dart & Industrial Desktop HMI';
       default:
-        return 'Domain Skills';
+        return 'Technical Competencies';
     }
   }
 

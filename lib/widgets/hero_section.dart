@@ -173,14 +173,14 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
                 color: AppColors.textPrimary,
               ),
               children: const [
-                TextSpan(text: "Engineering high-concurrency "),
+                TextSpan(text: "Engineering robust "),
                 TextSpan(
-                  text: "FastAPI microservices",
+                  text: "Python Backends & Flutter Apps",
                   style: TextStyle(
                     color: AppColors.accentPrimary,
                   ),
                 ),
-                TextSpan(text: " & real-time operational systems."),
+                TextSpan(text: " for real-world enterprise systems."),
               ],
             ),
           ),
@@ -191,7 +191,7 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
         StaggeredEntrance(
           delay: const Duration(milliseconds: 280),
           child: Text(
-            "Software Engineer with ~3 years of verified production experience at SPI Equipments India. Specialized in asynchronous Python backends, real-time WebSocket pipelines, PostgreSQL query optimization, and production Flutter client applications.",
+            "Software Developer with 3 years of combined experience across software development and manufacturing at SPI Equipments India. Specialized in Python backend development (FastAPI REST APIs), cross-platform Flutter applications (Mobile & Desktop SCADA), PostgreSQL/MySQL, and real-time WebSockets.",
             style: GoogleFonts.plusJakartaSans(
               fontSize: isDesktop ? 17 : 15,
               height: 1.65,
@@ -208,13 +208,13 @@ class _HeroSectionState extends State<HeroSection> with SingleTickerProviderStat
             spacing: 8,
             runSpacing: 8,
             children: [
-              _skillBadge("SPI Equipments (~3 Yrs)", isAccent: true),
-              _skillBadge("FastAPI & Python 3.11+"),
-              _skillBadge("WebSockets & AsyncIO"),
-              _skillBadge("PostgreSQL & MySQL"),
-              _skillBadge("Flutter & Dart Clients"),
-              _skillBadge("GenAI & RAG (pgvector)"),
-              _skillBadge("Docker & Pytest"),
+              _skillBadge("SPI Equipments (R&D)", isAccent: true),
+              _skillBadge("Python & FastAPI"),
+              _skillBadge("Flutter & Dart (Desktop & Mobile)"),
+              _skillBadge("RS-232 Serial & SCADA"),
+              _skillBadge("PostgreSQL, MySQL & Redis"),
+              _skillBadge("WebSockets & MQTT"),
+              _skillBadge("Docker, Nginx & CI/CD"),
             ],
           ),
         ),
